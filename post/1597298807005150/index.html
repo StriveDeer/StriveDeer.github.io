@@ -1,0 +1,459 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>cesium(笔记-5) | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1693360277241">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1693360277241"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    cesium(笔记-5)
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-08-21 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/pndVDXOa4/" class="post-tags">
+                            # cesium
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>记初步实现 cesium 通过鼠标完成模型创建<br>
+<img class="alignnone size-medium" src="https://ibiji.top/ibiji_images/posts/1597298807005150/001.jpg" /></p>
+<p>通过鼠标滑动实时抓取当前坐标与高度，动态刷新到左侧二维缩略图信息框中，用户可通过手动输入或鼠标实时获取坐标点，点击确认添加后，在指定坐标点生成对应模型</p>
+<!-- more -->
+<p><strong>案例模型采用3D Tiles 及 GLTF</strong><br>
+<a href="https://cesium.com/blog/2017/07/12/the-next-generation-of-3d-tiles/">3D Tiles官方介绍</a><br>
+<a href="https://github.com/javagl/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_002_BasicGltfStructure.md">GLTF 官方介绍</a></p>
+<h1 id="3d-tiles介绍">3D Tiles介绍：</h1>
+<p>3D Tiles 是：</p>
+<ul>
+<li>Open（开放）</li>
+<li>Optimized for streaming and rendering（针对流和渲染进行了优化）</li>
+<li>Designed for 3D（专为3D设计）</li>
+<li>Interactive（交互式互动）</li>
+<li>Styleable（设置样式）</li>
+<li>Adaptable（适应性强）</li>
+<li>Flexible（灵活）</li>
+<li>Heterogeneous（异构的</li>
+<li>Precise（精确）</li>
+<li>Temporal（时间动态</li>
+</ul>
+<h2 id="渲染">渲染</h2>
+<p>3D Tiles是基于状态，从UNLOADING开始，通过一系列的request，完成最初的数据加载过程，结束LOADING状态，进入Pocessing过程，也就是数据解析。数据解析完后进入READY状态，通过selectTile，最终调用Content对应的update方法，构造最终的drawcommand，加入渲染队列。当然，如果有需要释放的Tile，则在unloadTiles中处理。细心的人会发现Pocessing和Ready状态。最终调用的都是update方法。这里解释一下：3D Tiles中主要的数据部分就是glTF，而glTF也是基于状态管理的，无论是glTF的解析还是构造DrawCommand，只是state不同，都是在update方法中完成的。<br>
+<img class="alignnone size-medium" src="https://ibiji.top/ibiji_images/posts/1597298807005150/002.jpg" /></p>
+<h1 id="gltf介绍">GLTF介绍：</h1>
+<p>gltf的核心是一个JSON文件。这个文件描述了3D场景的全部内容。它由场景结构本身的描述组成，由定义场景图的节点层次结构给出。场景中出现的三维对象是使用附着到节点上的网格定义的。材质定义对象的外观。动画描述了随着时间的推移，三维对象是如何转换的（例如，旋转到转换），而蒙皮定义了基于骨架姿势的对象几何体是如何变形的。摄影机描述渲染器的视图配置。</p>
+<h2 id="基础结构">基础结构</h2>
+<ul>
+<li>scene：整个场景的入口点，由node构成图（树）结构（类似OSG的场景组织）组成</li>
+<li>node：场景层级中的一个节点，可以包含位置变换，可以有子节点。同时，node通过指向mesh、camera、skin来描述node的形变</li>
+<li>camera：定义渲染场景的视点配置</li>
+<li>mesh：描述了在场景中出现的几何物体，并通过accessor（访问器）来访问其真实的几何数据，通过material（材质）来确定渲染外观</li>
+<li>skin：蒙皮描述模型绑定到骨骼上的参数，用来实现骨骼动画，其真实数据也是通过访问器来获取的</li>
+<li>animation：骨骼动画，描述某个节点怎么随着时间运动</li>
+<li>accessor：访问器，定义了如何从二进制数据源中获取数据，在mesh、animation、skin中都会用到访问器。其指向buffer和bufferview，在这里面存着真正的几何数据</li>
+<li>material：材质包含了定义物体模型外观的参数，特别是纹理参数</li>
+<li>texture：包括采样器和图片，定义如何将纹理映射到模型<br>
+<img class="alignnone size-medium" src="https://ibiji.top/ibiji_images/posts/1597298807005150/003.jpg" /></li>
+</ul>
+<h2 id="对外部数据的引用">对外部数据的引用</h2>
+<p>二进制数据，如三维对象的几何图形和纹理，通常不包含在JSON文件中。相反，它们存储在专用文件中，JSON部分只包含指向这些文件的链接。这允许二进制数据以非常紧凑的形式存储，并且可以通过Web高效地传输。此外，数据可以直接存储在渲染器中，而不必解析、解码或预处理数据。<br>
+<img class="alignnone size-medium" src="https://ibiji.top/ibiji_images/posts/1597298807005150/004.jpg" /></p>
+<h1 id="实现思路">实现思路</h1>
+<h2 id="需要获取坐标点与高度">需要获取坐标点与高度</h2>
+<ul>
+<li>屏幕坐标</li>
+</ul>
+<pre><code class="language-javascript">	var handler= new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+	handler.setInputAction(function (movement) {
+	     console.log(movement.position);
+	}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+</code></pre>
+<ul>
+<li>世界坐标</li>
+</ul>
+<pre><code class="language-javascript">	var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+	handler.setInputAction(function (movement) {
+	     var position = viewer.scene.camera.pickEllipsoid(movement.position, viewer.scene.globe.ellipsoid);
+	     console.log(position);
+	}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+</code></pre>
+<ul>
+<li>场景坐标</li>
+</ul>
+<pre><code class="language-javascript">	var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+	handler.setInputAction(function (movement) {
+	     var position = viewer.scene.pickPosition(movement.position);
+	     console.log(position);
+	}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+</code></pre>
+<ul>
+<li>地标坐标</li>
+</ul>
+<pre><code class="language-javascript">	var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+	handler.setInputAction(function (movement) {
+	     var ray=viewer.camera.getPickRay(movement.position);
+	     var position = viewer.scene.globe.pick(ray, viewer.scene);
+	     console.log(position);
+	}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+</code></pre>
+<h2 id="加载模型">加载模型</h2>
+<pre><code class="language-javascript">	var entity = viewer.entities.add({
+	    name: 'model/CesiumMilkTruck/CesiumMilkTruck.glb',
+	    position: position,
+	    orientation: orientation,
+	    model: {
+	        uri: 'model/CesiumMilkTruck/CesiumMilkTruck.glb',
+	    }
+	});
+	viewer.trackedEntity = entity;
+</code></pre>
+<h1 id="完整代码实现">完整代码实现</h1>
+<h2 id="js">JS</h2>
+<pre><code class="language-javascript">    var viewer = new Cesium.Viewer('cesiumContainer', {
+        imageryProvider: Cesium.createOpenStreetMapImageryProvider({
+            url: 'https://a.tile.openstreetmap.org/'
+        }),
+        shouldAnimate: false,
+        infoBox: false,
+        selectionIndicator: false,
+        shadows: false,
+        geocoder: false,
+        homeButton: false,
+        sceneModePicker: false,
+        baseLayerPicker: false,
+        navigationHelpButton: false,
+        // animation: false,
+        // timeline: false,
+        fullscreenButton: false
+    });
+
+    var scene = viewer.scene;
+    //
+    var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+    handler.setInputAction(function (movement) {
+        var cartesian = scene.camera.pickEllipsoid(movement.endPosition, ellipsoid);
+        var ellipsoid = scene.globe.ellipsoid;
+        if (cartesian) {
+            var cartographic = ellipsoid.cartesianToCartographic(cartesian);
+            var coords = 'lng' + Cesium.Math.toDegrees(cartographic.longitude).toFixed(6) + ', ' + 'lat' + Cesium.Math.toDegrees(cartographic.latitude).toFixed(6) + '，' + 'hig' + Math.ceil(viewer.camera.positionCartographic.height);
+            console.log(&quot;--&gt;&quot; + coords)
+            $(&quot;#val1&quot;).val(Cesium.Math.toDegrees(cartographic.longitude).toFixed(6))
+            $(&quot;#val2&quot;).val(Cesium.Math.toDegrees(cartographic.latitude).toFixed(6))
+            $(&quot;#val3&quot;).val(Math.ceil(viewer.camera.positionCartographic.height))
+
+        } else { //
+            console.log(&quot;--&gt;&quot; + ERROR)
+        }
+    }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+    var params = {
+        tx: $(&quot;#val1&quot;).val(),    //模型中心X轴坐标（经度，单位：十进制度）   
+        ty: $(&quot;#val2&quot;).val(),     //模型中心Y轴坐标（纬度，单位：十进制度）   
+        tz: 0,      //模型中心Z轴坐标（高程，单位：米）   
+        rx: 0,     //X轴（经度）方向旋转角度（单位：度）   
+        ry: 0,     //Y轴（纬度）方向旋转角度（单位：度）   
+        rz: 0      //Z轴（高程）方向旋转角度（单位：度）
+    };
+
+    function createModel() {
+
+        console.log(&quot;------&gt;&quot; + $(&quot;#height&quot;).val());
+        //
+        // viewer.entities.removeAll();
+
+        var position = Cesium.Cartesian3.fromDegrees($(&quot;#val1&quot;).val(), $(&quot;#val2&quot;).val(), $(&quot;#val3&quot;).val());
+        var heading = Cesium.Math.toRadians(135);
+        var pitch = 0;
+        var roll = 0;
+        var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+        var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
+
+        var entity = viewer.entities.add({
+            name: 'model/CesiumMilkTruck/CesiumMilkTruck.glb',
+            position: position,
+            orientation: orientation,
+            model: {
+                uri: 'model/CesiumMilkTruck/CesiumMilkTruck.glb',
+            }
+        });
+        viewer.trackedEntity = entity;
+
+
+		// 3D Tiles
+
+        /*viewer.scene.globe.depthTestAgainstTerrain = true;
+        // var url = &quot;model/daodan/tileset.json&quot;;
+        var url = Cesium.IonResource.fromAssetId(1);
+        var tileset = new Cesium.Cesium3DTileset({url: url});
+
+        var primitive1 = viewer.scene.primitives.add(tileset);
+
+        primitive1.readyPromise.then(function (t) {
+            console.log(&quot;====&gt;&quot;+$(&quot;#val1&quot;).val() + &quot;,&quot;+$(&quot;#val2&quot;).val())
+            var originalSphere = t.boundingSphere;
+            var radius = originalSphere.radius;
+            viewer.zoomTo(t, new Cesium.HeadingPitchRange(0.5, -0.5, radius * 4.0));
+            //
+            var mx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(params.rx));
+            var my = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(params.ry));
+            var mz = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(params.rz));
+            var rotationX = Cesium.Matrix4.fromRotationTranslation(mx);
+            var rotationY = Cesium.Matrix4.fromRotationTranslation(my);
+            var rotationZ = Cesium.Matrix4.fromRotationTranslation(mz);
+            // var position = Cesium.Cartesian3.fromDegrees(params.tx, params.ty, $(&quot;#val3&quot;).val());
+            var position = Cesium.Cartesian3.fromDegrees($(&quot;#val1&quot;).val(), $(&quot;#val2&quot;).val(), $(&quot;#val3&quot;).val());
+
+            var m = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+            //
+            Cesium.Matrix4.multiply(m, rotationX, m);
+            Cesium.Matrix4.multiply(m, rotationY, m);
+            Cesium.Matrix4.multiply(m, rotationZ, m);
+            tileset._root.transform = m;
+
+        }).otherwise(function (error) {
+
+            var msg = JSON.stringify(error);
+
+            console.log(&quot;msg -------------&gt;&quot; + msg);
+        });*/
+    }
+
+</code></pre>
+<h2 id="html-代码">HTML 代码</h2>
+<pre><code class="language-html">	&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot;
+          content=&quot;width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no&quot;&gt;
+    &lt;link href=&quot;css/widgets.css&quot; rel=&quot;stylesheet&quot;/&gt;
+    &lt;title&gt;add model&lt;/title&gt;
+
+    &lt;script src=&quot;https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;css/style.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bootstrap/css/bootstrap.css&quot;/&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery-3.4.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;bootstrap/js/bootstrap.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/Sandcastle-header.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/require.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/Cesium.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- 开发环境版本，包含了有帮助的命令行警告 --&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue/dist/vue.js&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+
+        html, body, #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;style&gt;
+    @import url(css/bucket.css);
+
+    #toolbar {
+        background: rgba(42, 42, 42, 0.8);
+        padding: 4px;
+        border-radius: 4px;
+    }
+
+    #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+&lt;/style&gt;
+
+&lt;div id=&quot;cesiumContainer&quot; class=&quot;fullSize&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;loadingOverlay&quot;&gt;&lt;h1&gt;Loading...&lt;/h1&gt;&lt;/div&gt;
+&lt;div id=&quot;toolbar&quot;&gt;
+    &lt;!--&lt;div&gt;Height&lt;/div&gt;--&gt;
+    &lt;!--&lt;input type=&quot;range&quot; min=&quot;-100.0&quot; max=&quot;100.0&quot; step=&quot;1&quot; data-bind=&quot;value: height, valueUpdate: 'input'&quot;&gt;--&gt;
+    &lt;!--&lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: height&quot;&gt;--&gt;
+    &lt;!--&lt;input value=&quot;0&quot; id=&quot;height&quot; type=&quot;text&quot;&gt;--&gt;
+    &lt;!--&lt;button onclick=&quot;createModel()&quot;&gt;添加&lt;/button&gt;--&gt;
+
+
+    &lt;div class=&quot;panel panel-default&quot;&gt;
+        &lt;div class=&quot;panel-heading&quot;&gt;车&lt;/div&gt;
+        &lt;div class=&quot;panel-body&quot;&gt;
+            &lt;div&gt;
+                &lt;img src=&quot;img/car.jpg&quot; style=&quot;height: 100px&quot;&gt;
+            &lt;/div&gt;
+            &lt;hr/&gt;
+            &lt;!-- Single button --&gt;
+            &lt;div class=&quot;btn-group&quot;&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-default dropdown-toggle&quot; data-toggle=&quot;dropdown&quot;
+                        aria-haspopup=&quot;true&quot;
+                        aria-expanded=&quot;false&quot;&gt;
+                    参数 &lt;span class=&quot;caret&quot;&gt;&lt;/span&gt;
+                &lt;/button&gt;
+                &lt;ul class=&quot;dropdown-menu&quot;&gt;
+                    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;经度&lt;input id=&quot;val1&quot; type=&quot;text&quot; style=&quot;color: #000000&quot;/&gt;&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;纬度&lt;input id=&quot;val2&quot; type=&quot;text&quot; style=&quot;color: #000000&quot;/&gt;&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;高度&lt;input id=&quot;val3&quot; type=&quot;text&quot; style=&quot;color: #000000&quot;/&gt;&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;button onclick=&quot;createModel()&quot;&gt;&lt;a&gt;确认添加&lt;/a&gt;&lt;/button&gt;
+
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><strong>效果图</strong><br>
+<img class="alignnone size-medium" src="https://ibiji.top/ibiji_images/posts/1597298807005150/005.jpg" /><br>
+<img class="alignnone size-medium" src="https://ibiji.top/ibiji_images/posts/1597298807005150/006.jpg" /><br>
+<img class="alignnone size-medium" src="https://ibiji.top/ibiji_images/posts/1597298807005150/007.jpg" /></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597298774980907/" class="post-title gt-a-link">
+                    cesium(笔记-4)
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>kafka压力、数据丢失测试 | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1693360277241">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1693360277241"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    kafka压力、数据丢失测试
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-04-21 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/TB4SSpygT/" class="post-tags">
+                            # kafka
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | centos 7.0 | kafka_2.11-1.1.1 | opt/zookeeper-3.4.6 | flume-1.8.0 | nginx-openresty/1.13.6.2</strong></p>
+<p>本文主要通过Nginx做日志服务器 以POST请求生成日志（每次请求约为275字节，JSON格式），利用lua脚本变为相应格式，flume指定<code>Source</code>为<code>TailDirSouce</code>、<code>kafka Channel</code>、配置ACK应答机制<code>a1.channels.c1.kafka.producer.acks = -1</code>失败重试次数<code>a1.channels.c1.kafka.producer.retries = 3</code>;kafka主题设定三个分区两个副本</p>
+<!-- more -->
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>备注</th>
+<th>操作系统</th>
+<th>运行服务</th>
+<th>配置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>master</td>
+<td>控制节点</td>
+<td>CentOs7</td>
+<td>kafka、zookeeper、nginx、flume</td>
+<td>1C 2GM</td>
+</tr>
+<tr>
+<td>slave0</td>
+<td>计算节点</td>
+<td>CentOs7</td>
+<td>kafka、zookeeper</td>
+<td>1C 1.5GM</td>
+</tr>
+<tr>
+<td>slave1</td>
+<td>块存储节点</td>
+<td>CentOs7</td>
+<td>kafka、zookeeper</td>
+<td>1C 1.5GM</td>
+</tr>
+</tbody>
+</table>
+<p><code>注：C-核 M-内存</code></p>
+<h1 id="启动nginx">启动nginx</h1>
+<pre><code class="language-shell">    /usr/local/openresty/nginx/sbin/nginx 
+</code></pre>
+<h1 id="启动zookeeper">启动zookeeper</h1>
+<pre><code class="language-shell">    /opt/zookeeper-3.4.6/bin/zkServer.sh start 
+</code></pre>
+<h1 id="启动flume">启动flume</h1>
+<pre><code class="language-shell">    bin/flume-ng agent -n a1 -c conf/ -f myconf/nginx-kafka-kill.conf -Dflume.root.logger=INFO,consoledate
+</code></pre>
+<h1 id="启动kafka">启动kafka</h1>
+<pre><code class="language-shell">    /opt/kafka_2.11-1.1.1/bin/kafka-server-start.sh -daemon /opt/kafka_2.11-1.1.1/config/server.properties 
+</code></pre>
+<h1 id="以下为-idea-程序输出log数-与-nginx采集到的log数-各个节点kafka消费到的log数对比">以下为 IDEA 程序输出log数 与 Nginx采集到的log数、各个节点kafka消费到的log数对比</h1>
+<table>
+<thead>
+<tr>
+<th>IDEA log</th>
+<th>Nginx log</th>
+<th>Master消费</th>
+<th>slave0消费</th>
+<th>slave1消费</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>842</td>
+<td>701</td>
+<td>722</td>
+<td>732</td>
+</tr>
+<tr>
+<td>1500</td>
+<td>1269</td>
+<td>1041</td>
+<td>1086  1111</td>
+<td></td>
+</tr>
+<tr>
+<td>2000</td>
+<td>1727</td>
+<td>1480</td>
+<td>1493</td>
+<td>1461</td>
+</tr>
+<tr>
+<td>2500</td>
+<td>2022</td>
+<td>1665</td>
+<td>1739</td>
+<td>1655</td>
+</tr>
+<tr>
+<td>3000</td>
+<td>2315</td>
+<td>1892</td>
+<td>1983</td>
+<td>2163</td>
+</tr>
+<tr>
+<td>5000</td>
+<td>4800</td>
+<td>2924</td>
+<td>2924</td>
+<td>----</td>
+</tr>
+</tbody>
+</table>
+<h2 id="期间杀掉master节点kafka进程slave0节点停止消费这里很疑惑">期间杀掉master节点kafka进程，slave0节点停止消费（这里很疑惑）</h2>
+<p>查看主题详情</p>
+<pre><code class="language-shell">bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic testkill
+Topic:testkill  PartitionCount:3        ReplicationFactor:2     Configs:
+        Topic: testkill Partition: 0    Leader: 1       Replicas: 0,1   Isr: 1
+        Topic: testkill Partition: 1    Leader: 2       Replicas: 1,2   Isr: 2,1
+        Topic: testkill Partition: 2    Leader: 2       Replicas: 2,0   Isr: 2
+</code></pre>
+<h2 id="idea程序中设定5000次请求请求完后启动kafka进程">IDEA程序中设定5000次请求，请求完后，启动kafka进程</h2>
+<p>恢复后查看节点详情</p>
+<pre><code class="language-shell">bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic testkill
+Topic:testkill  PartitionCount:3        ReplicationFactor:2     Configs:
+        Topic: testkill Partition: 0    Leader: 1       Replicas: 0,1   Isr: 1,0
+        Topic: testkill Partition: 1    Leader: 2       Replicas: 1,2   Isr: 2,1
+        Topic: testkill Partition: 2    Leader: 2       Replicas: 2,0   Isr: 2,0
+</code></pre>
+<blockquote>
+<p>kafka启动后，消费之前没有消费的数据,进本地磁盘各分区查找比对数据，均在</p>
+</blockquote>
+<h3 id="结论初步认定kafka高可用数据0丢失杀掉master节点kafka进程slave0节点停止消费这里有待验证吞吐量2000条一下压力正常随着时间推移数据量越大积压越大">结论：初步认定kafka高可用，数据0丢失（杀掉master节点kafka进程,slave0节点停止消费这里有待验证），吞吐量2000条一下压力正常，随着时间推移数据量越大积压越大</h3>
+<h1 id="kafka-offset-维护方式">kafka offset 维护方式</h1>
+<ul>
+<li>zookeeper维护</li>
+</ul>
+<blockquote>
+<p>使用zookeeper来维护offset<br>
+kafka 0.9 以前的版本是将offset 存储在zookeeper上的，kafka在传输数据时，数据消费成功就会修改偏移量，这样就可以保证数据不会丢失而导致传输出错；但是这也存在一个问题：那就是每次消费数据时都要将数据的offset写入一次，效率比较低，而且zookeeper与kafka的offset变化确认也需要走网络IO，这样就会给offset的维护带来不稳定性和低效。</p>
+</blockquote>
+<ul>
+<li>kafka自己维护offset</li>
+</ul>
+<blockquote>
+<p>使用broker来维护offset<br>
+kafka 0.9 以后，offset的使用了内部的roker来管理，这样仅仅只需要broker，而不要zookeeper来维护，都是将topic提交给__consumer_offsets函数来执行。</p>
+</blockquote>
+<ul>
+<li>也可以将kafka偏移量存入redis中，利用redis事务性维护offset</li>
+</ul>
+<h2 id="kafka消息的位置">kafka消息的位置</h2>
+<table>
+<thead>
+<tr>
+<th>含义</th>
+<th>名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>earlieastLeaderOffsets</td>
+<td>存储在broker上的leader节点的最早的消息偏移量</td>
+</tr>
+<tr>
+<td>consumerOffsets</td>
+<td>消费者消费的消息偏移量位置</td>
+</tr>
+</tbody>
+</table>
+<p>情况一：正常情况下，消费的消息偏移量应该大于broker上存储的最早的消息偏移量，即 A &lt; B<br>
+<img class="alignnone size-medium" src="/images/kafka/001.png" /></p>
+<p>情况二：如果A 依然小于 B，则仍可以正常消费<br>
+<img class="alignnone size-medium" src="/images/kafka/002.png" /></p>
+<p>情况三：然而，当 A &gt; B 时，则说明还没有被消费的消息已经被清除<br>
+<img class="alignnone size-medium" src="/images/kafka/003.png" /></p>
+<p>此种情况会抛出 kafka.common.OffsetOutOfRangeException 异常。</p>
+<blockquote>
+<p>在没有外部系统清除kafka消息的情况下，协调设置broker的最大保留大小 log.retention.bytes 和 最大保留时间log.retention.hours 等，来配合消费者端的读取消息。可以通过读取和监控消费者消费的offsets，来保证消息不会被意外清除。</p>
+</blockquote>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597299109989595/" class="post-title gt-a-link">
+                    elasticsearch 启动报错(3)
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

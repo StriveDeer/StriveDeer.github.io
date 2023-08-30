@@ -1,0 +1,216 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>hadoop 启动报错 | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1693360277241">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1693360277241"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    hadoop 启动报错
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-07-20 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/ShJB_F921/" class="post-tags">
+                            # centos
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | centos 7.0 | Hadoop  2.8.1</strong></p>
+<pre><code>[root@master sbin]# ./start-all.sh
+This script is Deprecated. Instead use start-dfs.sh and start-yarn.sh
+Starting namenodes on [master]
+The authenticity of host 'master (192.168.91.10)' can't be established.
+...
+RSA key fingerprint is 7e:3f:e7:5b:69:74:e3:0e:87:7b:2b:df:3d:64:b3:1e.
+Are you sure you want to continue connecting (yes/no)? yes
+master: Warning: Permanently added 'master,192.168.91.10' (RSA) to the list of known hosts.
+master: Error: JAVA_HOME is not set and could not be found.
+master: Error: JAVA_HOME is not set and could not be found.
+slave0: Error: JAVA_HOME is not set and could not be found.
+slave1: Error: JAVA_HOME is not set and could not be found.
+Starting secondary namenodes [0.0.0.0]
+The authenticity of host '0.0.0.0 (0.0.0.0)' can't be established.
+RSA key fingerprint is 7e:3f:e7:5b:69:74:e3:0e:87:7b:2b:df:3d:64:b3:1e.
+Are you sure you want to continue connecting (yes/no)? yes
+0.0.0.0: Warning: Permanently added '0.0.0.0' (RSA) to the list of known hosts.
+0.0.0.0: Error: JAVA_HOME is not set and could not be found.
+starting yarn daemons
+starting resourcemanager, logging to /opt/hadoop/logs/yarn-root-resourcemanager-master.out
+slave0: Error: JAVA_HOME is not set and could not be found.
+slave1: Error: JAVA_HOME is not set and could not be found.
+master: Error: JAVA_HOME is not set and could not be found.
+</code></pre>
+<h3 id="查看各个配置文件">查看各个配置文件</h3>
+<p>1.core-site.xml<br>
+2.hdfs-site.xml<br>
+3.mapred-site.xml<br>
+4.yarn-site.xml</p>
+<h3 id="修改-profile-文件">修改 profile 文件</h3>
+<pre><code>export HADOOP_HOME=/opt/hadoop export PATH=$PATH:${HADOOP_HOME}/bin (这里要修改成自己的安装路径)
+</code></pre>
+<h3 id="修改文件-rootmaster-hadoop-vi-hadoop-envsh">修改文件： [root@master hadoop]# vi hadoop-env.sh</h3>
+<p><em>文件中：</em><br>
+export JAVA_HOME=${JAVA_HOME}</p>
+<p><em>修改为（修改成自己的jdk路径）：</em></p>
+<p>export JAVA_HOME=/usr/jdk1.8</p>
+<p>在重新启动,启动成功 查看进程,进程运行<br>
+错误解决</p>
+<pre><code>[root@master sbin]# ./start-all.sh
+This script is Deprecated. Instead use start-dfs.sh and start-yarn.sh Starting namenodes on 
+[master] master: starting namenode, logging to /opt/hadoop/logs/hadoop-root-namenode-master.
+out slave1: starting datanode, logging to /opt/hadoop/logs/hadoop-root-datanode-slave1.
+out master: starting datanode, logging to /opt/hadoop/logs/hadoop-root-datanode-master.
+out slave0: starting datanode, logging to /opt/hadoop/logs/hadoop-root-datanode-slave0.
+out Starting secondary namenodes [0.0.0.0] 0.0.0.0: 
+starting secondarynamenode, logging to /opt/hadoop/logs/hadoop-root-secondarynamenode-master.
+out starting yarn daemons resourcemanager running as process 3253. Stop it first. 
+slave1: starting nodemanager, logging to /opt/hadoop/logs/yarn-root-nodemanager-slave1.
+out master: starting nodemanager, logging to /opt/hadoop/logs/yarn-root-nodemanager-master.
+out slave0: starting nodemanager, logging to /opt/hadoop/logs/yarn-root-nodemanager-slave0.out
+
+[root@master sbin]# jps
+4176 NodeManager 
+4289 Jps 
+3253 ResourceManager 
+3669 NameNode 
+3957 SecondaryNameNode 
+3771 DataNode```</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

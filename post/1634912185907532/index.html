@@ -1,0 +1,334 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>CentOS7 部署 SuperSet | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1693360277241">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1693360277241"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    CentOS7 部署 SuperSet
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-10-22 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/hHn_zM_Mo/" class="post-tags">
+                            # bi
+                        </a>
+                    
+                        <a href="https://ibiji.top/tag/Pnz19nyUBC/" class="post-tags">
+                            # superset
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="superset-安装">Superset 安装</h2>
+<h3 id="安装-anaconda">安装 anaconda</h3>
+<p>1、安装依赖</p>
+<pre><code class="language-shell">sudo yum install bzip2
+</code></pre>
+<p>2、下载安装包</p>
+<pre><code class="language-shell">wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh
+</code></pre>
+<p>3、安装Anaconda</p>
+<pre><code class="language-shell">sudo bash Anaconda3-2021.05-Linux-x86_64.sh
+
+提示信息一：
+In order to continue the installation process, please review the license agreement. Please, press ENTER to continue &gt;&gt;&gt;
+
+回车后继续安装过程；
+
+提示信息二：
+Do you accept the license terms? [yes|no]
+[no] &gt;&gt;&gt; yes
+
+阅读协议后，输入yes确认接受许可协议；
+
+提示信息三：
+确认Anaconda的安装位置
+Anaconda3 will now be installed into this location:
+/root/anaconda3
+
+  - Press ENTER to confirm the location
+  - Press CTRL-C to abort the installation
+  - Or specify a different location below
+
+提示信息四：
+修改.bashrc脚本将 Anaconda目录添加到PATH中
+Do you wish the installer to initialize Anaconda3
+in your /root/.bashrc ? [yes|no]
+[no] &gt;&gt;&gt; yes
+</code></pre>
+<hr>
+<h3 id="安装-superset">安装 superset</h3>
+<p>1、安装依赖</p>
+<pre><code class="language-shell">sudo yum install gcc gcc-c++ libffi-devel python-devel python-pip python-wheel openssl-devel cyrus-sasl-devel openldap-devel
+</code></pre>
+<p>2、创建 conda 虚拟空间</p>
+<pre><code class="language-shell">conda create -n superset python=3.7
+</code></pre>
+<pre><code class="language-shell">conda create -n superset python=3.7
+...
+  zlib               pkgs/main/linux-64::zlib-1.2.11-h7b6447c_3
+  
+Proceed ([y]/n)? y
+
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+#
+# To activate this environment, use
+#     $ conda activate superset
+# To deactivate an active environment, use
+#     $ conda deactivate
+</code></pre>
+<p>3、进入空间</p>
+<pre><code>conda activate superset
+</code></pre>
+<p>4、更新pip</p>
+<pre><code class="language-shell">pip install --upgrade setuptools pip
+</code></pre>
+<p>5、安装superset</p>
+<pre><code class="language-shell">pip install apache-superset
+或指定douban源
+pip install apache-superset -i https://pypi.douban.com/simple/
+</code></pre>
+<p>6、初始化数据库<code>superset db upgrade</code></p>
+<pre><code class="language-shell">superset db upgrade
+
+logging was configured successfully
+INFO:superset.utils.logging_configurator:logging was configured successfully
+...
+
+No PIL installation found
+...
+</code></pre>
+<p>这里报错 <code>No PIL installation found</code></p>
+<blockquote>
+<p>执行 <code>pip install pillow</code> 后重新初始化数据库</p>
+</blockquote>
+<pre><code class="language-shell">pip install pillow
+
+Collecting pillow
+  Downloading Pillow-8.4.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.1 MB)
+     |████████████████████████████████| 3.1 MB 43 kB/s
+Installing collected packages: pillow
+Successfully installed pillow-8.4.0
+</code></pre>
+<p>7、创建管理员用户</p>
+<pre><code>export FLASK_APP=superset
+flask fab create-admin
+
+根据提示输入用户名密码、名字和姓氏
+Username [admin]:
+...
+Recognized Database Authentications.
+Admin User admin created.
+</code></pre>
+<p>8、创建默认角色和权限</p>
+<pre><code class="language-shell">superset init
+</code></pre>
+<p>9、导入测试数据</p>
+<pre><code class="language-shell">superset load_examples
+</code></pre>
+<p>10、启动</p>
+<pre><code class="language-shell">superset run -h 0.0.0.0 -p 8880
+</code></pre>
+<hr>
+<h3 id="配置数据源添加-clickhouse为例">配置数据源<code>添加 clickhouse为例</code></h3>
+<h4 id="进入数据库源界面"><code>进入数据库源界面</code></h4>
+<img src="https://ibiji.top/ibiji_images/posts/1634912185907532/data_source.png" alt="数据源" style="zoom:33%;" />
+<img src="https://ibiji.top/ibiji_images/posts/1634912185907532/add_database_01.png" alt="添加数据库1" style="zoom:33%;" />
+<h4 id="选择数据库类型"><code>选择数据库类型</code></h4>
+<img src="https://ibiji.top/ibiji_images/posts/1634912185907532/add_database_02.png" alt="添加数据库2" style="zoom:33%;" />
+<h4 id="输入连接信息"><code>输入连接信息</code></h4>
+<img src="https://ibiji.top/ibiji_images/posts/1634912185907532/add_database_03.png" alt="添加数据库3" style="zoom: 33%;" />
+#### sqlalchemy uri 填入驱动信息
+<pre><code class="language-shell">clickhouse://&lt;用户名&gt;:&lt;密码&gt;@192.168.0.1:8123/&lt;表名&gt;
+</code></pre>
+<hr>
+<h3 id="配置数据库">配置数据库</h3>
+<h4 id="mysql">mysql</h4>
+<pre><code class="language-shell">pip install mysqlclient
+</code></pre>
+<h4 id="presto">Presto</h4>
+<pre><code>pip install pyhive
+</code></pre>
+<h4 id="sparksql">SparkSQL</h4>
+<pre><code>pip install pyhive
+</code></pre>
+<h4 id="clickhouse">ClickHouse</h4>
+<pre><code>pip install clickhouse-sqlalchemy
+</code></pre>
+<blockquote>
+<p>驱动版本需要 clickhouse-driver &gt; 0.2.0、clickhouse-sqlalchemy &gt; 0.1.5</p>
+</blockquote>
+<hr>
+<h3 id="错误解决">错误解决</h3>
+<pre><code>1、Was unable to import superset Error: No module named 'wtforms_json'
+
+ pip install WTForms-JSON
+
+2、Was unable to import superset Error: No module named 'flask_compress'
+
+pip install Flask-Compress
+
+3、Was unable to import superset Error: No module named 'flask_migrate'
+
+pip install flask-migrate
+
+4、Was unable to import superset Error: No module named 'celery'
+
+pip install celery
+
+5、Was unable to import superset Error: No module named 'flask_talisman'
+
+pip install flask-talisaman
+</code></pre>
+<hr>
+<h3 id="引用">引用</h3>
+<p>- [1] <a href="https://www.anaconda.com/products/individual#Downloads">anaconda 下载地址</a></p>
+<p>- [2] <a href="https://superset.apache.org/docs/installation/installing-superset-from-scratch">superset 官方安装文档</a></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1632663907735209/" class="post-title gt-a-link">
+                    LogStash Filter -- mutate
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://ibiji.top</id>
+    <title>ibiji</title>
+    <updated>2023-08-30T01:55:46.485Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://ibiji.top"/>
+    <link rel="self" href="https://ibiji.top/atom.xml"/>
+    <subtitle>❤️</subtitle>
+    <logo>https://ibiji.top/images/avatar.png</logo>
+    <icon>https://ibiji.top/favicon.ico</icon>
+    <rights>All rights reserved 2023, ibiji</rights>
+    <entry>
+        <title type="html"><![CDATA[CentOS7 部署 SuperSet]]></title>
+        <id>https://ibiji.top/post/1634912185907532/</id>
+        <link href="https://ibiji.top/post/1634912185907532/">
+        </link>
+        <updated>2021-10-22T14:16:26.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[LogStash Filter -- mutate]]></title>
+        <id>https://ibiji.top/post/1632663907735209/</id>
+        <link href="https://ibiji.top/post/1632663907735209/">
+        </link>
+        <updated>2021-09-26T13:45:08.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hadoop 3.x web 界面 upload 文件 Couldn't upload the file]]></title>
+        <id>https://ibiji.top/post/1616739950215654/</id>
+        <link href="https://ibiji.top/post/1616739950215654/">
+        </link>
+        <updated>2021-03-26T06:25:50.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[nginx + tomcat 集群测试]]></title>
+        <id>https://ibiji.top/post/1597299780863965/</id>
+        <link href="https://ibiji.top/post/1597299780863965/">
+        </link>
+        <updated>2019-08-28T15:23:31.000Z</updated>
+        <summary type="html"><![CDATA[<p><strong>运行环境| centos 7.0 | VMware Workstation 15 Pro | tomcat 8.5 | nginx 1.14.2</strong></p>
+<p>Tomcat集群 + Nginx负载均衡测试</p>
+<h2 id="测试命令">测试命令：</h2>
+<p><code>ab -n20000 -c1000 http://192.168.244.10/drp/index.jsp</code></p>
+]]></summary>
+        <content type="html"><![CDATA[<p><strong>运行环境| centos 7.0 | VMware Workstation 15 Pro | tomcat 8.5 | nginx 1.14.2</strong></p>
+<p>Tomcat集群 + Nginx负载均衡测试</p>
+<h2 id="测试命令">测试命令：</h2>
+<p><code>ab -n20000 -c1000 http://192.168.244.10/drp/index.jsp</code></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hive启动报错2]]></title>
+        <id>https://ibiji.top/post/1597299417459319/</id>
+        <link href="https://ibiji.top/post/1597299417459319/">
+        </link>
+        <updated>2019-08-25T17:41:31.000Z</updated>
+        <summary type="html"><![CDATA[<h2 id="启动hive报错">启动Hive报错</h2>
+<blockquote>
+<p>Error: Failed to open new session: java.lang.RuntimeException: java.lang.RuntimeException: org.apache.hadoop.security.AccessControlException: Permission denied: user=anonymous, access=EXECUTE, inode=&quot;/tmp&quot;:root:supergroup:drwx------</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<h2 id="启动hive报错">启动Hive报错</h2>
+<blockquote>
+<p>Error: Failed to open new session: java.lang.RuntimeException: java.lang.RuntimeException: org.apache.hadoop.security.AccessControlException: Permission denied: user=anonymous, access=EXECUTE, inode=&quot;/tmp&quot;:root:supergroup:drwx------</p>
+</blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hive HBase 整合]]></title>
+        <id>https://ibiji.top/post/1597299498833374/</id>
+        <link href="https://ibiji.top/post/1597299498833374/">
+        </link>
+        <updated>2019-08-24T07:10:33.000Z</updated>
+        <summary type="html"><![CDATA[<p><strong>运行环境 | centos 7.0 | hbase 1.2.10 | hive 1.2.2</strong></p>
+<blockquote>
+<p>Hive只支持insert和delete操作，并不支持update操作，所以无法实施更新hive里的数据，而HBase正好弥补了这一点，所以在某些场景下需要将Hive和HBase整合起来一起使用。<br>
+Hive与HBase整合的实现是利用两者本身对外的API接口互相通信来完成的，其具体工作交由Hive的lib目录中的<code>hive-hbase-handler-*.jar</code>工具类来实现，通信原理如下图所示</p>
+</blockquote>
+<h2 id="hive整合hbase后的使用场景">Hive整合HBase后的使用场景：</h2>
+<ul>
+<li>通过Hive把数据加载到HBase中，数据源可以是文件也可以是Hive中的表。</li>
+<li>通过整合，让HBase支持JOIN、GROUP等SQL查询语法。</li>
+<li>通过整合，不仅可完成HBase的数据实时查询，也可以使用Hive查询HBase中的数据完成复杂的数据分析。</li>
+</ul>
+]]></summary>
+        <content type="html"><![CDATA[<p><strong>运行环境 | centos 7.0 | hbase 1.2.10 | hive 1.2.2</strong></p>
+<blockquote>
+<p>Hive只支持insert和delete操作，并不支持update操作，所以无法实施更新hive里的数据，而HBase正好弥补了这一点，所以在某些场景下需要将Hive和HBase整合起来一起使用。<br>
+Hive与HBase整合的实现是利用两者本身对外的API接口互相通信来完成的，其具体工作交由Hive的lib目录中的<code>hive-hbase-handler-*.jar</code>工具类来实现，通信原理如下图所示</p>
+</blockquote>
+<h2 id="hive整合hbase后的使用场景">Hive整合HBase后的使用场景：</h2>
+<ul>
+<li>通过Hive把数据加载到HBase中，数据源可以是文件也可以是Hive中的表。</li>
+<li>通过整合，让HBase支持JOIN、GROUP等SQL查询语法。</li>
+<li>通过整合，不仅可完成HBase的数据实时查询，也可以使用Hive查询HBase中的数据完成复杂的数据分析。</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[cesium(笔记-5)]]></title>
+        <id>https://ibiji.top/post/1597298807005150/</id>
+        <link href="https://ibiji.top/post/1597298807005150/">
+        </link>
+        <updated>2019-08-20T18:10:30.000Z</updated>
+        <summary type="html"><![CDATA[<p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>记初步实现 cesium 通过鼠标完成模型创建<br>
+<img class="alignnone size-medium" src="https://ibiji.top/ibiji_images/posts/1597298807005150/001.jpg" /></p>
+<p>通过鼠标滑动实时抓取当前坐标与高度，动态刷新到左侧二维缩略图信息框中，用户可通过手动输入或鼠标实时获取坐标点，点击确认添加后，在指定坐标点生成对应模型</p>
+]]></summary>
+        <content type="html"><![CDATA[<p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>记初步实现 cesium 通过鼠标完成模型创建<br>
+<img class="alignnone size-medium" src="https://ibiji.top/ibiji_images/posts/1597298807005150/001.jpg" /></p>
+<p>通过鼠标滑动实时抓取当前坐标与高度，动态刷新到左侧二维缩略图信息框中，用户可通过手动输入或鼠标实时获取坐标点，点击确认添加后，在指定坐标点生成对应模型</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[cesium(笔记-4)]]></title>
+        <id>https://ibiji.top/post/1597298774980907/</id>
+        <link href="https://ibiji.top/post/1597298774980907/">
+        </link>
+        <updated>2019-08-20T15:10:31.000Z</updated>
+        <summary type="html"><![CDATA[<p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>粒子系统是一种图形技术，可以模拟复杂的物理效果。粒子系统是小图像的集合，当它们一起观看时，会形成一个更复杂的“模糊”物体，如火、烟、天气或烟花fireworkds。通过使用诸如初始位置、速度和寿命等属性指定单个粒子的行为，可以控制这些复杂的效果。</p>
+<p>粒子系统效应在电影和电子游戏中很常见。例如，为了表示飞机的损坏，技术艺术家可以使用粒子系统来表示飞机引擎上的爆炸，然后渲染不同的粒子系统，表示飞机坠毁时的烟雾轨迹。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>粒子系统是一种图形技术，可以模拟复杂的物理效果。粒子系统是小图像的集合，当它们一起观看时，会形成一个更复杂的“模糊”物体，如火、烟、天气或烟花fireworkds。通过使用诸如初始位置、速度和寿命等属性指定单个粒子的行为，可以控制这些复杂的效果。</p>
+<p>粒子系统效应在电影和电子游戏中很常见。例如，为了表示飞机的损坏，技术艺术家可以使用粒子系统来表示飞机引擎上的爆炸，然后渲染不同的粒子系统，表示飞机坠毁时的烟雾轨迹。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[cesium(笔记-3)]]></title>
+        <id>https://ibiji.top/post/1597298726342254/</id>
+        <link href="https://ibiji.top/post/1597298726342254/">
+        </link>
+        <updated>2019-08-19T15:10:31.000Z</updated>
+        <summary type="html"><![CDATA[<p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>Cesium支持流式的、可视化的全球高程投影地形地势、水形数据，包括海洋、湖泊、河流、山峰、峡谷和其他能够被三维展示出来的且效果比二维好的地形数据。像图层数据一样，Cesium引擎会从一个服务器上请求流式地形数据，仅请求那些基于当前相机能看到的需要绘制的图层上的数据。</p>
+<pre><code class="language-js">// Load Cesium World Terrain
+viewer.terrainProvider = Cesium.createWorldTerrain({
+    requestWaterMask : true, // required for water effects
+    requestVertexNormals : true // required for terrain lighting
+});
+
+// Enable depth testing so things behind the terrain disappear.
+viewer.scene.globe.depthTestAgainstTerrain = true;
+</code></pre>
+]]></summary>
+        <content type="html"><![CDATA[<p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>Cesium支持流式的、可视化的全球高程投影地形地势、水形数据，包括海洋、湖泊、河流、山峰、峡谷和其他能够被三维展示出来的且效果比二维好的地形数据。像图层数据一样，Cesium引擎会从一个服务器上请求流式地形数据，仅请求那些基于当前相机能看到的需要绘制的图层上的数据。</p>
+<pre><code class="language-js">// Load Cesium World Terrain
+viewer.terrainProvider = Cesium.createWorldTerrain({
+    requestWaterMask : true, // required for water effects
+    requestVertexNormals : true // required for terrain lighting
+});
+
+// Enable depth testing so things behind the terrain disappear.
+viewer.scene.globe.depthTestAgainstTerrain = true;
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[cesium(笔记-2)]]></title>
+        <id>https://ibiji.top/post/1597298686608552/</id>
+        <link href="https://ibiji.top/post/1597298686608552/">
+        </link>
+        <updated>2019-08-18T15:10:31.000Z</updated>
+        <summary type="html"><![CDATA[<p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>Cesium应用程序另一个关键元素是Imagery(图层)。瓦片图集合根据不同的投影方式映射到虚拟的三维数字地球表面。依赖于相机指向地表的方向和距离，Cesium会去请求和渲染不同层级的图层详细信息。<br>
+多种图层能够被添加、移除、排序和适应到Cesium中。<br>
+Cesium提供了一系列方法用于处理图层，比如颜色自适应，图层叠加融合</p>
+]]></summary>
+        <content type="html"><![CDATA[<p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>Cesium应用程序另一个关键元素是Imagery(图层)。瓦片图集合根据不同的投影方式映射到虚拟的三维数字地球表面。依赖于相机指向地表的方向和距离，Cesium会去请求和渲染不同层级的图层详细信息。<br>
+多种图层能够被添加、移除、排序和适应到Cesium中。<br>
+Cesium提供了一系列方法用于处理图层，比如颜色自适应，图层叠加融合</p>
+]]></content>
+    </entry>
+</feed>

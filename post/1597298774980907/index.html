@@ -1,0 +1,651 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>cesium(笔记-4) | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1693360277241">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1693360277241"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    cesium(笔记-4)
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-08-20 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/pndVDXOa4/" class="post-tags">
+                            # cesium
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>粒子系统是一种图形技术，可以模拟复杂的物理效果。粒子系统是小图像的集合，当它们一起观看时，会形成一个更复杂的“模糊”物体，如火、烟、天气或烟花fireworkds。通过使用诸如初始位置、速度和寿命等属性指定单个粒子的行为，可以控制这些复杂的效果。</p>
+<p>粒子系统效应在电影和电子游戏中很常见。例如，为了表示飞机的损坏，技术艺术家可以使用粒子系统来表示飞机引擎上的爆炸，然后渲染不同的粒子系统，表示飞机坠毁时的烟雾轨迹。</p>
+<!--more-->
+<h2 id="particle-system-basics-粒子系统基础">Particle system basics 粒子系统基础</h2>
+<pre><code class="language-js">var particleSystem = viewer.scene.primitives.add(new Cesium.ParticleSystem({
+    image : '../../SampleData/smoke.png',
+    imageSize : new Cesium.Cartesian2(20, 20),
+    startScale : 1.0,
+    endScale : 4.0,
+    particleLife : 1.0,
+    speed : 5.0,
+    emitter : new Cesium.CircleEmitter(0.5),
+    emissionRate : 5.0,
+    modelMatrix : entity.computeModelMatrix(viewer.clock.startTime, new Cesium.Matrix4()),
+    lifetime : 16.0
+}));
+</code></pre>
+<h2 id="emitters-发射器">Emitters 发射器</h2>
+<p>当粒子诞生时，其初始位置和速度矢量由ParticleEmitter控制。发射器将每秒生成一些粒子，由emissionRate参数指定，根据发射器类型用随机速度初始化。</p>
+<h3 id="boxemitter-盒形发射器">BoxEmitter 盒形发射器</h3>
+<pre><code>var particleSystem = scene.primitives.add(new Cesium.ParticleSystem({
+    image : '../../SampleData/smoke.png',
+    color: Cesium.Color.MAGENTA,
+    emissionRate: 5.0,
+    emitter: new Cesium.BoxEmitter(new Cesium.Cartesian3(5.0, 5.0, 5.0)),
+    imageSize : new Cesium.Cartesian2(25.0, 25.0),
+    modelMatrix : entity.computeModelMatrix(viewer.clock.startTime, new Cesium.Matrix4()),
+    lifetime : 16.0
+}));
+</code></pre>
+<h3 id="circleemitter-圆形发射器">CircleEmitter 圆形发射器</h3>
+<p>BoxEmitter在一个盒子内随机取样的位置初始化粒子，从六个盒子表面中的一个引导出来.</p>
+<pre><code>
+</code></pre>
+<h3 id="circleemitter-圆形发射器-2">CircleEmitter 圆形发射器</h3>
+<p>CircleEmitter在发射器上轴线方向上的圆形内的随机采样位置初始化粒子。</p>
+<pre><code class="language-js">var particleSystem = scene.primitives.add(new Cesium.ParticleSystem({
+    image : '../../SampleData/smoke.png',
+    color: Cesium.Color.MAGENTA,
+    emissionRate: 5.0,
+    emitter: new Cesium.CircleEmitter(5.0),
+    imageSize : new Cesium.Cartesian2(25.0, 25.0),
+    modelMatrix : entity.computeModelMatrix(viewer.clock.startTime, new Cesium.Matrix4()),
+    lifetime : 16.0
+}));
+</code></pre>
+<h3 id="coneemitter-锥形发射器">ConeEmitter 锥形发射器</h3>
+<p>ConeEmitter在圆锥体的顶端初始化粒子，并以随机的角度引导它们离开圆锥体。</p>
+<pre><code class="language-js">var particleSystem = scene.primitives.add(new Cesium.ParticleSystem({
+    image : '../../SampleData/smoke.png',
+    color: Cesium.Color.MAGENTA,
+    emissionRate: 5.0,
+    emitter: new Cesium.ConeEmitter(Cesium.Math.toRadians(30.0)),
+    imageSize : new Cesium.Cartesian2(25.0, 25.0),
+    modelMatrix : entity.computeModelMatrix(viewer.clock.startTime, new Cesium.Matrix4()),
+    lifetime : 16.0
+}));
+</code></pre>
+<h3 id="sphereemitter-球形发射器">SphereEmitter 球形发射器</h3>
+<p>SphereEmitter在球体内随机取样的位置初始化粒子，并将它们从球体中心向外引导。</p>
+<pre><code class="language-js">var particleSystem = scene.primitives.add(new Cesium.ParticleSystem({
+    image : '../../SampleData/smoke.png',
+    color: Cesium.Color.MAGENTA,
+    emissionRate: 5.0,
+    emitter: new Cesium.SphereEmitter(5.0),
+    imageSize : new Cesium.Cartesian2(25.0, 25.0),
+    modelMatrix : entity.computeModelMatrix(viewer.clock.startTime, new Cesium.Matrix4()),
+    lifetime : 16.0
+}));
+</code></pre>
+<h2 id="particle-emission-rate-粒子发射率">Particle emission rate 粒子发射率</h2>
+<p>emissionRate控制每秒发射多少粒子，这会改变系统中粒子的密度。 指定一组突burst以在指定时间发射粒子burst（如上面的动画所示）。这会增加粒子系统的多样性或爆炸性。</p>
+<pre><code class="language-js">bursts : [
+    new Cesium.ParticleBurst({time : 5.0, minimum : 300, maximum : 500}),
+    new Cesium.ParticleBurst({time : 10.0, minimum : 50, maximum : 100}),
+    new Cesium.ParticleBurst({time : 15.0, minimum : 200, maximum : 300})
+]
+</code></pre>
+<h2 id="life-of-the-particle-and-life-of-the-system-粒子寿命和系统寿命">Life of the particle and life of the system 粒子寿命和系统寿命</h2>
+<pre><code class="language-js">lifetime : 16.0,
+loop: false
+//要随机化每个粒子的输出，使用变量minimumParticleLife和maximumArticleLife。
+minimumParticleLife: 5.0,
+maximumParticleLife: 10.0
+
+</code></pre>
+<h2 id="styling-particles-样式化粒子">Styling particles 样式化粒子</h2>
+<pre><code class="language-js">//Color 颜色
+startColor : Cesium.Color.LIGHTSEAGREEN.withAlpha(0.7),
+endColor : Cesium.Color.WHITE.withAlpha(0.0),
+
+//Size 大小
+minimumImageSize : new Cesium.Cartesian2(30.0, 30.0),
+maximumImageSize : new Cesium.Cartesian2(60.0, 60.0)
+
+//可以通过startScale和endscale属性在其生命周期中进行调整，以使粒子随时间增长或收缩。
+startScale: 1.0,
+endScale: 4.0
+
+//速度由speed或minimumSpeed和maximumSpeed控制。
+minimumSpeed: 5.0,
+maximumSpeed: 10.0
+</code></pre>
+<h2 id="通过应用更新函数可以进一步自定义粒子系统">通过应用更新函数，可以进一步自定义粒子系统。</h2>
+<p>对于重力、风或颜色更改等效果，它充当每个粒子的手动更新程序。<br>
+项目系统有一个updateCallback，它在模拟过程中修改粒子的属性。此函数采用粒子和模拟时间步骤。大多数基于物理的效果将修改速度矢量以改变方向或速度。下面是一个让粒子对重力作出反应的例子：</p>
+<pre><code class="language-js">var gravityVector = new Cesium.Cartesian3();
+var gravity = -(9.8 * 9.8);
+function applyGravity(p, dt) {
+    // Compute a local up vector for each particle in geocentric space.
+    var position = p.position;
+
+    Cesium.Cartesian3.normalize(position, gravityVector);
+    Cesium.Cartesian3.multiplyByScalar(gravityVector, gravity * dt, gravityVector);
+
+    p.velocity = Cesium.Cartesian3.add(p.velocity, gravityVector, p.velocity);
+}
+
+//该函数计算重力矢量，并使用重力加速度来改变粒子的速度。 将重力设置为粒子系统的updateFunction：
+updateCallback : applyGravity
+</code></pre>
+<h2 id="positioning-定位">Positioning 定位</h2>
+<pre><code class="language-js">/*
+modelMatrix：将粒子系统从模型转换为世界坐标。
+emitterModelMatrix：在粒子系统的局部坐标系中变换粒子系统发射器。
+*/
+var entity = viewer.entities.add({
+    model : {
+        uri : '../../SampleData/models/CesiumMilkTruck/CesiumMilkTruck-kmc.glb'
+    },
+    position : Cesium.Cartesian3.fromDegrees(-75.15787310614596, 39.97862668312678)
+});
+viewer.trackedEntity = entity;
+
+modelMatrix: entity.computeModelMatrix(time, new Cesium.Matrix4())
+
+
+function computeEmitterModelMatrix() {
+    hpr = Cesium.HeadingPitchRoll.fromDegrees(0.0, 0.0, 0.0, hpr);
+    trs.translation = Cesium.Cartesian3.fromElements(-4.0, 0.0, 1.4, translation);
+    trs.rotation = Cesium.Quaternion.fromHeadingPitchRoll(hpr, rotation);
+
+    return Cesium.Matrix4.fromTranslationRotationScale(trs, emitterModelMatrix);
+}
+
+
+var particleSystem = viewer.scene.primitives.add(new Cesium.ParticleSystem({
+    image : '../../SampleData/smoke.png',
+    
+    startColor : Cesium.Color.LIGHTSEAGREEN.withAlpha(0.7),
+    endColor : Cesium.Color.WHITE.withAlpha(0.0),
+    
+    startScale : 1.0,
+    endScale : 4.0,
+    
+    particleLife : 1.0,
+    
+    minimumSpeed : 1.0,
+    maximumSpeed : 4.0
+    
+    imageSize : new Cesium.Cartesian2(25, 25),
+    emissionRate : 5.0,
+    lifetime : 16.0,
+    
+    modelMatrix : entity.computeModelMatrix(viewer.clock.startTime, new Cesium.Matrix4())
+    emitterModelMatrix : computeEmitterModelMatrix()
+}));
+</code></pre>
+<h2 id="完整示例">完整示例</h2>
+<pre><code class="language-js">var viewer = new Cesium.Viewer('cesiumContainer');
+
+//Set the random number seed for consistent results.
+Cesium.Math.setRandomNumberSeed(3);
+
+//Set bounds of our simulation time
+var start = Cesium.JulianDate.fromDate(new Date(2015, 2, 25, 16));
+var stop = Cesium.JulianDate.addSeconds(start, 120, new Cesium.JulianDate());
+
+//Make sure viewer is at the desired time.
+viewer.clock.startTime = start.clone();
+viewer.clock.stopTime = stop.clone();
+viewer.clock.currentTime = start.clone();
+viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; //Loop at the end
+viewer.clock.multiplier = 1;
+viewer.clock.shouldAnimate = true;
+
+//Set timeline to simulation bounds
+viewer.timeline.zoomTo(start, stop);
+
+var viewModel = {
+    emissionRate : 5.0,
+    gravity : 0.0,
+    minimumParticleLife : 1.2,
+    maximumParticleLife : 1.2,
+    minimumSpeed : 1.0,
+    maximumSpeed : 4.0,
+    startScale : 1.0,
+    endScale : 5.0,
+    particleSize : 25.0
+};
+
+Cesium.knockout.track(viewModel);
+var toolbar = document.getElementById('toolbar');
+Cesium.knockout.applyBindings(viewModel, toolbar);
+
+var entityPosition = new Cesium.Cartesian3();
+var entityOrientation = new Cesium.Quaternion();
+var rotationMatrix = new Cesium.Matrix3();
+var modelMatrix = new Cesium.Matrix4();
+
+function computeModelMatrix(entity, time) {
+    return entity.computeModelMatrix(time, new Cesium.Matrix4());
+}
+
+var emitterModelMatrix = new Cesium.Matrix4();
+var translation = new Cesium.Cartesian3();
+var rotation = new Cesium.Quaternion();
+var hpr = new Cesium.HeadingPitchRoll();
+var trs = new Cesium.TranslationRotationScale();
+
+function computeEmitterModelMatrix() {
+    hpr = Cesium.HeadingPitchRoll.fromDegrees(0.0, 0.0, 0.0, hpr);
+    trs.translation = Cesium.Cartesian3.fromElements(-4.0, 0.0, 1.4, translation);
+    trs.rotation = Cesium.Quaternion.fromHeadingPitchRoll(hpr, rotation);
+
+    return Cesium.Matrix4.fromTranslationRotationScale(trs, emitterModelMatrix);
+}
+
+var pos1 = Cesium.Cartesian3.fromDegrees(-75.15787310614596, 39.97862668312678);
+var pos2 = Cesium.Cartesian3.fromDegrees(-75.1633691390455, 39.95355089912078);
+var position = new Cesium.SampledPositionProperty();
+
+position.addSample(start, pos1);
+position.addSample(stop, pos2);
+
+var entity = viewer.entities.add({
+    availability : new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({
+        start : start,
+        stop : stop
+    })]),
+    model : {
+        uri : '../SampleData/models/CesiumMilkTruck/CesiumMilkTruck-kmc.glb',
+        minimumPixelSize : 64
+    },
+    viewFrom: new Cesium.Cartesian3(-100.0, 0.0, 100.0),
+    position : position,
+    orientation : new Cesium.VelocityOrientationProperty(position)
+});
+viewer.trackedEntity = entity;
+
+var scene = viewer.scene;
+var particleSystem = scene.primitives.add(new Cesium.ParticleSystem({
+    image : '../SampleData/smoke.png',
+
+    startColor : Cesium.Color.LIGHTSEAGREEN.withAlpha(0.7),
+    endColor : Cesium.Color.WHITE.withAlpha(0.0),
+
+    startScale : viewModel.startScale,
+    endScale : viewModel.endScale,
+
+    minimumParticleLife : viewModel.minimumParticleLife,
+    maximumParticleLife : viewModel.maximumParticleLife,
+
+    minimumSpeed : viewModel.minimumSpeed,
+    maximumSpeed : viewModel.maximumSpeed,
+
+    imageSize : new Cesium.Cartesian2(viewModel.particleSize, viewModel.particleSize),
+
+    emissionRate : viewModel.emissionRate,
+
+    bursts : [
+        // these burst will occasionally sync to create a multicolored effect
+        new Cesium.ParticleBurst({time : 5.0, minimum : 10, maximum : 100}),
+        new Cesium.ParticleBurst({time : 10.0, minimum : 50, maximum : 100}),
+        new Cesium.ParticleBurst({time : 15.0, minimum : 200, maximum : 300})
+    ],
+
+    lifetime : 16.0,
+
+    emitter : new Cesium.CircleEmitter(2.0),
+
+    emitterModelMatrix : computeEmitterModelMatrix(),
+
+    updateCallback : applyGravity
+}));
+
+var gravityScratch = new Cesium.Cartesian3();
+
+function applyGravity(p, dt) {
+    // We need to compute a local up vector for each particle in geocentric space.
+    var position = p.position;
+
+    Cesium.Cartesian3.normalize(position, gravityScratch);
+    Cesium.Cartesian3.multiplyByScalar(gravityScratch, viewModel.gravity * dt, gravityScratch);
+
+    p.velocity = Cesium.Cartesian3.add(p.velocity, gravityScratch, p.velocity);
+}
+
+viewer.scene.preUpdate.addEventListener(function(scene, time) {
+    particleSystem.modelMatrix = computeModelMatrix(entity, time);
+
+    // Account for any changes to the emitter model matrix.
+    particleSystem.emitterModelMatrix = computeEmitterModelMatrix();
+
+    // Spin the emitter if enabled.
+    if (viewModel.spin) {
+        viewModel.heading += 1.0;
+        viewModel.pitch += 1.0;
+        viewModel.roll += 1.0;
+    }
+});
+
+Cesium.knockout.getObservable(viewModel, 'emissionRate').subscribe(
+    function(newValue) {
+        particleSystem.emissionRate = parseFloat(newValue);
+    }
+);
+
+Cesium.knockout.getObservable(viewModel, 'particleSize').subscribe(
+    function(newValue) {
+        var particleSize = parseFloat(newValue);
+        particleSystem.minimumImageSize.x = particleSize;
+        particleSystem.minimumImageSize.y = particleSize;
+        particleSystem.maximumImageSize.x = particleSize;
+        particleSystem.maximumImageSize.y = particleSize;
+    }
+);
+
+Cesium.knockout.getObservable(viewModel, 'minimumParticleLife').subscribe(
+    function(newValue) {
+        particleSystem.minimumParticleLife = parseFloat(newValue);
+    }
+);
+
+Cesium.knockout.getObservable(viewModel, 'maximumParticleLife').subscribe(
+    function(newValue) {
+        particleSystem.maximumParticleLife = parseFloat(newValue);
+    }
+);
+
+Cesium.knockout.getObservable(viewModel, 'minimumSpeed').subscribe(
+    function(newValue) {
+        particleSystem.minimumSpeed = parseFloat(newValue);
+    }
+);
+
+Cesium.knockout.getObservable(viewModel, 'maximumSpeed').subscribe(
+    function(newValue) {
+        particleSystem.maximumSpeed = parseFloat(newValue);
+    }
+);
+
+Cesium.knockout.getObservable(viewModel, 'startScale').subscribe(
+    function(newValue) {
+        particleSystem.startScale = parseFloat(newValue);
+    }
+);
+
+Cesium.knockout.getObservable(viewModel, 'endScale').subscribe(
+    function(newValue) {
+        particleSystem.endScale = parseFloat(newValue);
+    }
+);
+
+var options = [{
+    text : 'Circle Emitter',
+    onselect : function() {
+        particleSystem.emitter = new Cesium.CircleEmitter(2.0);
+    }
+}, {
+    text : 'Sphere Emitter',
+    onselect : function() {
+        particleSystem.emitter = new Cesium.SphereEmitter(2.5);
+    }
+}, {
+    text : 'Cone Emitter',
+    onselect : function() {
+        particleSystem.emitter = new Cesium.ConeEmitter(Cesium.Math.toRadians(45.0));
+    }
+}, {
+    text : 'Box Emitter',
+    onselect : function() {
+        particleSystem.emitter = new Cesium.BoxEmitter(new Cesium.Cartesian3(10.0, 10.0, 10.0));
+    }
+}];
+
+Sandcastle.addToolbarMenu(options);        
+</code></pre>
+<pre><code class="language-html">&lt;style&gt;
+    @import url(../templates/bucket.css);
+
+    #toolbar {
+        background: rgba(42, 42, 42, 0.8);
+        padding: 4px;
+        border-radius: 4px;
+    }
+
+    #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    #toolbar .header {
+        font-weight: bold;
+    }
+&lt;/style&gt;
+&lt;div id=&quot;cesiumContainer&quot; class=&quot;fullSize&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;loadingOverlay&quot;&gt;&lt;h1&gt;Loading...&lt;/h1&gt;&lt;/div&gt;
+&lt;div id=&quot;toolbar&quot;&gt;
+    &lt;table&gt;
+        &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Rate&lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;0.0&quot; max=&quot;100.0&quot; step=&quot;1&quot; data-bind=&quot;value: emissionRate, valueUpdate: 'input'&quot;&gt;
+                &lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: emissionRate&quot;&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;tr&gt;
+            &lt;td&gt;Size&lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;2&quot; max=&quot;60.0&quot; step=&quot;1&quot; data-bind=&quot;value: particleSize, valueUpdate: 'input'&quot;&gt;
+                &lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: particleSize&quot;&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;tr&gt;
+            &lt;td&gt;Min Life&lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;0.1&quot; max=&quot;30.0&quot; step=&quot;1&quot; data-bind=&quot;value: minimumParticleLife, valueUpdate: 'input'&quot;&gt;
+                &lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: minimumParticleLife&quot;&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;tr&gt;
+            &lt;td&gt;Max Life&lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;0.1&quot; max=&quot;30.0&quot; step=&quot;1&quot; data-bind=&quot;value: maximumParticleLife, valueUpdate: 'input'&quot;&gt;
+                &lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: maximumParticleLife&quot;&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;tr&gt;
+            &lt;td&gt;Min Speed&lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;0.0&quot; max=&quot;30.0&quot; step=&quot;1&quot; data-bind=&quot;value: minimumSpeed, valueUpdate: 'input'&quot;&gt;
+                &lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: minimumSpeed&quot;&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;tr&gt;
+            &lt;td&gt;Max Speed&lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;0.0&quot; max=&quot;30.0&quot; step=&quot;1&quot; data-bind=&quot;value: maximumSpeed, valueUpdate: 'input'&quot;&gt;
+                &lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: maximumSpeed&quot;&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;tr&gt;
+            &lt;td&gt;Start Scale&lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;0.0&quot; max=&quot;10.0&quot; step=&quot;1&quot; data-bind=&quot;value: startScale, valueUpdate: 'input'&quot;&gt;
+                &lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: startScale&quot;&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;tr&gt;
+            &lt;td&gt;End Scale&lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;0.0&quot; max=&quot;10.0&quot; step=&quot;1&quot; data-bind=&quot;value: endScale, valueUpdate: 'input'&quot;&gt;
+                &lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: endScale&quot;&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+
+        &lt;tr&gt;
+            &lt;td&gt;Gravity&lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;-20.0&quot; max=&quot;20.0&quot; step=&quot;1&quot; data-bind=&quot;value: gravity, valueUpdate: 'input'&quot;&gt;
+                &lt;input type=&quot;text&quot; size=&quot;5&quot; data-bind=&quot;value: gravity&quot;&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597298726342254/" class="post-title gt-a-link">
+                    cesium(笔记-3)
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

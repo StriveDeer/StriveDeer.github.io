@@ -1,0 +1,229 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Hive HBase 整合 | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1693360277241">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1693360277241"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Hive HBase 整合
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-08-24 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/9kr8vFHfF/" class="post-tags">
+                            # hbase
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | centos 7.0 | hbase 1.2.10 | hive 1.2.2</strong></p>
+<blockquote>
+<p>Hive只支持insert和delete操作，并不支持update操作，所以无法实施更新hive里的数据，而HBase正好弥补了这一点，所以在某些场景下需要将Hive和HBase整合起来一起使用。<br>
+Hive与HBase整合的实现是利用两者本身对外的API接口互相通信来完成的，其具体工作交由Hive的lib目录中的<code>hive-hbase-handler-*.jar</code>工具类来实现，通信原理如下图所示</p>
+</blockquote>
+<h2 id="hive整合hbase后的使用场景">Hive整合HBase后的使用场景：</h2>
+<ul>
+<li>通过Hive把数据加载到HBase中，数据源可以是文件也可以是Hive中的表。</li>
+<li>通过整合，让HBase支持JOIN、GROUP等SQL查询语法。</li>
+<li>通过整合，不仅可完成HBase的数据实时查询，也可以使用Hive查询HBase中的数据完成复杂的数据分析。</li>
+</ul>
+<!--more-->
+<h2 id="把hbase_homelib下所有的jar-复制到hive_homelib下">把<code>HBASE_HOME/lib</code>下所有的jar 复制到<code>HIVE_HOME/lib/</code>下</h2>
+<p><code>cp -n $HBASE_HOME/lib/* $HIVE_HOME/lib/</code> -n 表示对于目标路径下已经存在的文件，则不复制过去</p>
+<h2 id="修改hive-sitexml文件增加hbase的zookeeper集群信息">修改<code>hive-site.xml</code>文件，增加HBase的ZooKeeper集群信息</h2>
+<pre><code class="language-xml">&lt;property&gt;
+    &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;
+    &lt;value&gt;node01:2181,node02:2181,node03:2181&lt;/value&gt;
+&lt;/property&gt;
+</code></pre>
+<h2 id="指定-hbase-所使用的-zookeeper-集群的地址默认端口是-2181可以不写">指定 hbase 所使用的 zookeeper 集群的地址：默认端口是 2181，可以不写</h2>
+<p><code>set hbase.zookeeper.quorum=node01:2181,node02:2181,node03:2181;</code><br>
+<code>set zookeeper.znode.parent=/var/zookeeper/local;</code></p>
+<h2 id="指定-hbase-在-zookeeper-中使用的根目录">指定 hbase 在 zookeeper 中使用的根目录</h2>
+<p>该路径在hbase-site.xml可以查询，你在搭建hbase集群的时候，这个参数是必须设置的</p>
+<pre><code class="language-xml">&lt;property&gt;
+    &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;
+    &lt;value&gt;/var/zookeeper/local&lt;/value&gt;
+&lt;/property&gt;
+</code></pre>
+<h2 id="把hive_homelibhive-hbase-handler-121jar-复制到hbase_homelib下">把<code>HIVE_HOME/lib/hive-hbase-handler-1.2.1.jar</code> 复制到<code>HBASE_HOME/lib/</code>下</h2>
+<p><code>cp */hive-1.2.1/lib/hive-hbase-handler-1.2.1.jar  */hbase/lib/</code></p>
+<h2 id="启动hbase创建hbase表student">启动HBase,创建HBase表&quot;student&quot;</h2>
+<pre><code class="language-sql">create 'student','info'
+
+put 'student','0001','info:name','Tom'
+put 'student','0001','info:age','18'
+
+put 'student','0002','info:name','Madeline'
+put 'student','0002','info:age','15'
+
+put 'student','0003','info:name','jed'
+put 'student','0003','info:age','16'
+
+put 'student','0004','info:name','olivia'
+put 'student','0004','info:age','18'
+
+put 'student','0005','info:name','sarah'
+put 'student','0005','info:age','19'
+
+put 'student','0006','info:name','xiaohong'
+put 'student','0006','info:age','19'
+
+put 'student','0007','info:name','zhangsan'
+put 'student','0007','info:age','20'
+
+put 'student','0008','info:name','wangwu'
+put 'student','0008','info:age','22'
+
+</code></pre>
+<h2 id="hive中创建表结构">Hive中创建表结构</h2>
+<pre><code class="language-sql">CREATE EXTERNAL TABLE hive_student_name (key string,name string) STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler' WITH SERDEPROPERTIES (&quot;hbase.columns.mapping&quot; = &quot;:key,info:name&quot;) TBLPROPERTIES (&quot;hbase.table.name&quot; = &quot;student&quot;);
+
+CREATE EXTERNAL TABLE hive_student_age (key string,name string) STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler' WITH SERDEPROPERTIES (&quot;hbase.columns.mapping&quot; = &quot;:key,info:age&quot;) TBLPROPERTIES (&quot;hbase.table.name&quot; = &quot;student&quot;);
+</code></pre>
+<h2 id="通过hive客户端可以查询该表的数据">通过Hive客户端可以查询该表的数据</h2>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597298807005150/" class="post-title gt-a-link">
+                    cesium(笔记-5)
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

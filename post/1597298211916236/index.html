@@ -1,0 +1,282 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>centos7 安装mysql 及修改密码 | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1693360277241">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1693360277241"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    centos7 安装mysql 及修改密码
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-07-21 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/er3hplpij/" class="post-tags">
+                            # mysql
+                        </a>
+                    
+                        <a href="https://ibiji.top/tag/ShJB_F921/" class="post-tags">
+                            # centos
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | centos 7.0 | mysql 5.7</strong></p>
+<h2 id="mysql安装">mysql安装</h2>
+<ul>
+<li>官网下载MySQL rpm包</li>
+</ul>
+<pre><code>wget http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm
+</code></pre>
+<pre><code class="language-mysql">rpm -ivh mysql57-community-release-el7-8.noarch.rpm
+yum install mysql-community-server
+</code></pre>
+<h2 id="安装完后启动mysql服务">安装完后启动MySQL服务</h2>
+<pre><code class="language-mysql">service mysqld restart
+</code></pre>
+<h2 id="方法一">方法一</h2>
+<h3 id="查看默认密码">查看默认密码</h3>
+<pre><code class="language-shell">grep 'temporary password' /var/log/mysqld.log
+</code></pre>
+<h3 id="设置密码">设置密码：</h3>
+<pre><code class="language-mysql">alter user 'root'@'localhost' identified by '新密码';
+</code></pre>
+<p>如果报错</p>
+<blockquote>
+<p>ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</p>
+<ul>
+<li>修改密码强度<br>
+<code>set global validate_password_policy=0;</code><br>
+<code>set global validate_password_length=1;</code></li>
+</ul>
+<p>刷新后生效<br>
+mysql&gt; FLUSH PRIVILEGES;<br>
+Query OK, 0 rows affected (0.00 sec)</p>
+</blockquote>
+<hr>
+<h2 id="方法二">方法二</h2>
+<p>在 <code>/etc/my.cnf</code> 最后加上 <code>skip-grant-tables</code></p>
+<h3 id="重启服务免密码登陆修改密码刷新后生效">重启服务,免密码登陆，修改密码，刷新后生效</h3>
+<pre><code class="language-mysql">alter user 'root'@'localhost' identified by '新密码';
+FLUSH PRIVILEGES;
+</code></pre>
+<hr>
+<h3 id="创建用户密码规则修改">创建用户密码规则修改</h3>
+<pre><code class="language-msyql">CREATE USER '用户'@'%' IDENTIFIED BY '密码';
+</code></pre>
+<blockquote>
+<p>创建报错 <code>ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</code></p>
+</blockquote>
+<ul>
+<li>查看权限</li>
+</ul>
+<pre><code class="language-msyql">select @@validate_password_policy;  
+
+SHOW VARIABLES LIKE 'validate_password%';  
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Variable_name</th>
+<th style="text-align:right">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>validate_password_check_user_name</td>
+<td style="text-align:right">OFF</td>
+</tr>
+<tr>
+<td>validate_password_dictionary_file</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>validate_password_length</td>
+<td style="text-align:right">8</td>
+</tr>
+<tr>
+<td>validate_password_mixed_case_count</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td>validate_password_number_count</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td>validate_password_policy</td>
+<td style="text-align:right">MEDIUM</td>
+</tr>
+<tr>
+<td>validate_password_special_char_count</td>
+<td style="text-align:right">1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="修改密码等级">修改密码等级</h3>
+<pre><code class="language-mysql">set global validate_password_policy=LOW;
+</code></pre>
+<h3 id="设置密码长度">设置密码长度</h3>
+<pre><code class="language-mysql">set global validate_password_length=5;
+</code></pre>
+<h3 id="修改数据库远程登陆权限">修改数据库远程登陆权限：</h3>
+<pre><code class="language-mysql">use mysql;
+grant all privileges on *.* to 'root'@'%' identified by '密码' with grant option;
+</code></pre>
+<h3 id="修改-auto_increment-值">修改 AUTO_INCREMENT 值</h3>
+<pre><code>alter table &lt;table name&gt; AUTO_INCREMENT=1;
+</code></pre>
+<h2 id="错误解决">错误解决</h2>
+<h3 id="1-gpg-密钥">1、GPG 密钥</h3>
+<blockquote>
+<p>警告：/var/cache/yum/x86_64/7/mysql57-community/packages/mysql-community-client-5.7.38-1.el7.x86_64.rpm: 头V4 RSA/SHA256 Signature, 密钥 ID 3a79bd29: NOKEY</p>
+<p>从 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql 检索密钥<br>
+源 &quot;MySQL 5.7 Community Server&quot; 的 GPG 密钥已安装，但是不适用于此软件包。请检查源的公钥 URL 是否配置正确。</p>
+</blockquote>
+<pre><code class="language-shell">gpg --export -a 3a79bd29 &gt; 3a79bd29.asc
+rpm --import 3a79bd29.asc
+rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597298555199843/" class="post-title gt-a-link">
+                    centos7启动zookeeper 报错
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
