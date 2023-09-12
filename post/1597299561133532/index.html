@@ -1,0 +1,239 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>kafka生产者启动报错及kafka常用命令 | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1694489113997">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1694489113997"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    kafka生产者启动报错及kafka常用命令
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-05-03 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/TB4SSpygT/" class="post-tags">
+                            # kafka
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | centos 6.6 | kafka_2.11-1.1.1</strong></p>
+<blockquote>
+<p>kafka启动生产者后报错<br>
+WARN [Producer clientId=console-producer] Got error produce response with correlation id 3 on topic-partition test-2, retrying (2 attempts left). Error: NETWORK_EXCEPTION (org.apache.kafka.clients.producer.internals.Sender)</p>
+</blockquote>
+<!--more-->
+<h2 id="运行生产者命令后报错">运行生产者命令后报错</h2>
+<pre><code class="language-shell">./kafka-console-producer.sh --broker-list 192.168.83.128:9092 --topic test
+
+&gt;[2019-04-29 10:37:39,906] WARN [Producer clientId=console-producer] Got error produce response with correlation id 3 on topic-partition test-2, retrying (2 attempts left). Error: NETWORK_EXCEPTION (org.apache.kafka.clients.producer.internals.Sender)
+</code></pre>
+<h2 id="运行消费者报错">运行消费者报错</h2>
+<pre><code class="language-shell">./kafka-console-consumer.sh -zookeeper 192.168.83.129:2181 --from-beginning --topic test
+
+Using the ConsoleConsumer with old consumer is deprecated and will be removed in a future major release. Consider using the new consumer by passing [bootstrap-server] instead of [zookeeper].
+</code></pre>
+<h2 id="查看日志">查看日志</h2>
+<pre><code class="language-shell">[2019-05-02 16:10:25,182] ERROR Fatal error during KafkaServer startup. Prepare to shutdown (kafka.server.KafkaServer)
+kafka.common.InconsistentBrokerIdException: Configured broker.id 2 doesn't match stored broker.id 0 in meta.properties. If you moved your data, make sure your configured broker.id matches. If you intend to create a new broker, you should remove all data in your data directories (log.dirs).
+        at kafka.server.KafkaServer.getBrokerIdAndOfflineDirs(KafkaServer.scala:673)
+        at kafka.server.KafkaServer.startup(KafkaServer.scala:209)
+        at kafka.server.KafkaServerStartable.startup(KafkaServerStartable.scala:38)
+        at kafka.Kafka$.main(Kafka.scala:75)
+        at kafka.Kafka.main(Kafka.scala)
+[2019-05-02 16:10:25,185] INFO shutting down (kafka.server.KafkaServer)
+[2019-05-02 16:10:25,209] WARN  (kafka.utils.CoreUtils$)
+java.lang.NullPointerException
+        at kafka.server.KafkaServer$$anonfun$shutdown$5.apply$mcV$sp(KafkaServer.scala:572)
+        at kafka.utils.CoreUtils$.swallow(CoreUtils.scala:85)
+        at kafka.server.KafkaServer.shutdown(KafkaServer.scala:572)
+        at kafka.server.KafkaServer.startup(KafkaServer.scala:329)
+        at kafka.server.KafkaServerStartable.startup(KafkaServerStartable.scala:38)
+        at kafka.Kafka$.main(Kafka.scala:75)
+        at kafka.Kafka.main(Kafka.scala)
+[2019-05-02 16:10:25,211] INFO [ZooKeeperClient] Closing. (kafka.zookeeper.ZooKeeperClient)
+[2019-05-02 16:10:25,244] INFO Session: 0x26a778905c40001 closed (org.apache.zookeeper.ZooKeeper)
+[2019-05-02 16:10:25,246] INFO [ZooKeeperClient] Closed. (kafka.zookeeper.ZooKeeperClient)
+[2019-05-02 16:10:25,250] INFO shut down completed (kafka.server.KafkaServer)
+[2019-05-02 16:10:25,250] ERROR Exiting Kafka. (kafka.server.KafkaServerStartable)
+</code></pre>
+<h1 id="原因-所有配置-brokerid0">原因： 所有配置  <code>broker.id=0</code></h1>
+<p>修改 <code>kafka-logs-data/meta.properties</code><br>
+修改后重启正常生产和消费</p>
+<h1 id="常用命令">常用命令</h1>
+<p>生产者操作：<br>
+<code>./kafka-console-producer.sh --broker-list master:9092 --topic test</code></p>
+<p>消费者操作：<br>
+<code>./kafka-console-consumer.sh --bootstrap-server master:9092 --topic test --from-beginning</code></p>
+<p>创建topic<br>
+<code>./kafka-topics.sh --create --zookeeper master:2181 --replication-factor 2 --partitions 3 --topic test</code></p>
+<p>查看topic列表<br>
+<code>./kafka-topics.sh --list --zookeeper master:2181</code></p>
+<p>如果需要查看topic的详细信息，需要使用describe命令<br>
+<code>./kafka-topics.sh --describe --zookeeper node1:2181 --topic test-topic</code></p>
+<p>若不指定topic，则查看所有topic的信息<br>
+<code>./kafka-topics.sh --describe --zookeeper node1:2181</code></p>
+<p>删除topic<br>
+<code>./kafka-topics.sh --delete --zookeeper &lt;ZOOKEEPER IP:PORT&gt; --topic &lt;TOPIC NAME&gt;</code></p>
+<p>修改topic副本分布生成<br>
+<code>kafka-reassign-partitions.sh --zookeeper &lt;ZOOKEEPER IP:PORT&gt; --topics-to-move-json-file topic-generate.json --broker-list &quot;61,62,63&quot; --generate</code></p>
+<blockquote>
+<p>{<br>
+&quot;topics&quot;:[{&quot;topic&quot;: &quot;<TOPIC NAME>&quot;}],<br>
+&quot;version&quot;:1<br>
+}</p>
+</blockquote>
+<p>修改topic副本分布生效<br>
+<code>kafka-reassign-partitions --zookeeper &lt;ZOOKEEPER IP:PORT&gt; --reassignment-json-file partition-replica-reassignment.json --execute</code></p>
+<p>修改topic同步带宽<br>
+<code>kafka-reassign-partitions.sh --zookeeper &lt;ZOOKEEPER IP:PORT&gt;  --execute --reassignment-json-file partition-replica-reassignment.json —throttle 50000000</code></p>
+<p>更改kafka单个topic数据保存时间<br>
+<code>kafka-topics.sh --zookeeper &lt;ZOOKEEPER IP:PORT&gt; -topic &lt;TOPIC NAME&gt; --alter --config retention.ms=259200000</code></p>
+<p>执行删除<br>
+<code>kafka-topics --zookeeper &lt;ZOOKEEPER IP:PORT&gt; --alter --topic pnode.billing --config cleanup.policy=delete</code></p>
+<p>topic 分区动态扩容<br>
+<code>kafka-topics.sh --alter --zookeeper &lt;ZOOKEEPER IP:PORT&gt; --partitions &lt; partitions_NAME&gt; --topic &lt;TOPIC_NAME&gt;</code></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597299591548714/" class="post-title gt-a-link">
+                    kafka压力、数据丢失测试
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

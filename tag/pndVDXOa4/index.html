@@ -1,0 +1,302 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>cesium | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1694489113997">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <div class="main-content">
+        <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1694489113997"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+        <div class="current-tag-container">
+            <h2 class="title gt-c-content-color-first">
+                #cesium
+            </h2>
+        </div>
+        <div class="post-list-container">
+    <div class="post-inner">
+        
+            <div class="post gt-bg-theme-color-second">
+                <div class="post-left">
+                    <div>
+                        
+                        <a href="https://ibiji.top/post/1597298807005150/">
+                            <span class="post-title gt-c-content-color-first">cesium(笔记-5)</span>
+                        </a>
+                    </div>
+                    <div class="gt-post-content post-abstract gt-c-content-color-second">
+                        运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro
+记初步实现 cesium 通过鼠标完成模型创建
+
+通过鼠标滑动实时抓取当前坐标与高度，动态刷新到左侧二维缩略图信息框中，用户可通过手动输入或鼠标实时获取坐标点，点击确认添加后，在指定坐标点生成对应模型
+
+                    </div>
+                    <div class="post-info">
+                        <time class="post-time gt-c-content-color-first">
+                            发布于 · 2019-08-21 ·
+                        </time>
+                        
+                            <a href="https://ibiji.top/tag/pndVDXOa4/" class="post-tag">
+                                # cesium
+                            </a>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        
+            <div class="post gt-bg-theme-color-second">
+                <div class="post-left">
+                    <div>
+                        
+                        <a href="https://ibiji.top/post/1597298774980907/">
+                            <span class="post-title gt-c-content-color-first">cesium(笔记-4)</span>
+                        </a>
+                    </div>
+                    <div class="gt-post-content post-abstract gt-c-content-color-second">
+                        运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro
+粒子系统是一种图形技术，可以模拟复杂的物理效果。粒子系统是小图像的集合，当它们一起观看时，会形成一个更复杂的“模糊”物体，如火、烟、天气或烟花fireworkds。通过使用诸如初始位置、速度和寿命等属性指定单个粒子的行为，可以控制这些复杂的效果。
+粒子系统效应在电影和电子游戏中很常见。例如，为了表示飞机的损坏，技术艺术家可以使用粒子系统来表示飞机引擎上的爆炸，然后渲染不同的粒子系统，表示飞机坠毁时的烟雾轨迹。
+
+                    </div>
+                    <div class="post-info">
+                        <time class="post-time gt-c-content-color-first">
+                            发布于 · 2019-08-20 ·
+                        </time>
+                        
+                            <a href="https://ibiji.top/tag/pndVDXOa4/" class="post-tag">
+                                # cesium
+                            </a>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        
+            <div class="post gt-bg-theme-color-second">
+                <div class="post-left">
+                    <div>
+                        
+                        <a href="https://ibiji.top/post/1597298726342254/">
+                            <span class="post-title gt-c-content-color-first">cesium(笔记-3)</span>
+                        </a>
+                    </div>
+                    <div class="gt-post-content post-abstract gt-c-content-color-second">
+                        运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro
+Cesium支持流式的、可视化的全球高程投影地形地势、水形数据，包括海洋、湖泊、河流、山峰、峡谷和其他能够被三维展示出来的且效果比二维好的地形数据。像图层数据一样，Cesium引擎会从一个服务器上请求流式地形数据，仅请求那些基于当前相机能看到的需要绘制的图层上的数据。
+// Load Cesium World Terrain
+viewer.terrainProvider = Cesium.createWorldTerrain({
+    requestWaterMask : true, // required for water effects
+    requestVertexNormals : true // required for terrain lighting
+});
+
+// Enable depth testing so things behind the terrain disappear.
+viewer.scene.globe.depthTestAgainstTerrain = true;
+
+
+                    </div>
+                    <div class="post-info">
+                        <time class="post-time gt-c-content-color-first">
+                            发布于 · 2019-08-19 ·
+                        </time>
+                        
+                            <a href="https://ibiji.top/tag/pndVDXOa4/" class="post-tag">
+                                # cesium
+                            </a>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        
+            <div class="post gt-bg-theme-color-second">
+                <div class="post-left">
+                    <div>
+                        
+                        <a href="https://ibiji.top/post/1597298686608552/">
+                            <span class="post-title gt-c-content-color-first">cesium(笔记-2)</span>
+                        </a>
+                    </div>
+                    <div class="gt-post-content post-abstract gt-c-content-color-second">
+                        运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro
+Cesium应用程序另一个关键元素是Imagery(图层)。瓦片图集合根据不同的投影方式映射到虚拟的三维数字地球表面。依赖于相机指向地表的方向和距离，Cesium会去请求和渲染不同层级的图层详细信息。
+多种图层能够被添加、移除、排序和适应到Cesium中。
+Cesium提供了一系列方法用于处理图层，比如颜色自适应，图层叠加融合
+
+                    </div>
+                    <div class="post-info">
+                        <time class="post-time gt-c-content-color-first">
+                            发布于 · 2019-08-18 ·
+                        </time>
+                        
+                            <a href="https://ibiji.top/tag/pndVDXOa4/" class="post-tag">
+                                # cesium
+                            </a>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        
+            <div class="post gt-bg-theme-color-second">
+                <div class="post-left">
+                    <div>
+                        
+                        <a href="https://ibiji.top/post/1597298622682345/">
+                            <span class="post-title gt-c-content-color-first">cesium(笔记-1)</span>
+                        </a>
+                    </div>
+                    <div class="gt-post-content post-abstract gt-c-content-color-second">
+                        运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro
+隐藏界面中的元素
+var viewer = new Cesium.Viewer('cesiumContainer',{
+    geocoder:false,  //查找位置工具，查找到之后会将镜头对准找到的地址，默认使用bing地图
+    homeButton:false, //视角返回初始位置
+    sceneModePicker:false, //选择视角的模式，有三种：3D，2D，哥伦布视图（CV）
+    baseLayerPicker:false, //图层选择器，选择要显示的地图服务和地形服务.
+    navigationHelpButton:false, //导航帮助按钮，显示默认的地图控制帮助.
+    animation:false, //动画器件，控制视图动画的播放速度
+    creditContainer:&quot;credit&quot;,
+    timeline:false, //时间线,指示当前时间，并允许用户跳到特定的时间
+    fullscreenButton:false, //
+    vrButton:false, //
+    });
+
+
+                    </div>
+                    <div class="post-info">
+                        <time class="post-time gt-c-content-color-first">
+                            发布于 · 2019-08-17 ·
+                        </time>
+                        
+                            <a href="https://ibiji.top/tag/pndVDXOa4/" class="post-tag">
+                                # cesium
+                            </a>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        
+    </div>
+</div>
+        <div class="pagination-container">
+    
+    
+</div>
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

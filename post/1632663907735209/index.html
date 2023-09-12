@@ -1,0 +1,237 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>LogStash Filter -- mutate | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1694489113997">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1694489113997"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    LogStash Filter -- mutate
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-09-26 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/2xHVkiVcW/" class="post-tags">
+                            # logstash
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="过滤器指定配置">过滤器指定配置</h2>
+<pre><code>mutate {
+}
+</code></pre>
+<h3 id="复制字段-copy">复制字段 copy</h3>
+<pre><code>mutate {
+	copy =&gt; {&quot;name&quot; =&gt; &quot;name2&quot;}
+}
+</code></pre>
+<h3 id="正则表达式替换-gsub">正则表达式替换 gsub</h3>
+<pre><code>mutate {
+	gsub =&gt; [&quot;name&quot;,&quot;o&quot;,&quot;p&quot;]
+}
+</code></pre>
+<h3 id="转变参数类型-convert">转变参数类型 convert</h3>
+<pre><code>mutate {
+	convert =&gt; {
+     	 &quot;name&quot; =&gt; &quot;string&quot;
+    	 &quot;age&quot; =&gt; &quot;integer&quot;
+    } 
+}
+</code></pre>
+<h3 id="大小写转换-lowercaseuppercase">大小写转换 lowercase&amp;uppercase</h3>
+<pre><code>mutate {
+	#lowercase =&gt; [ &quot;name&quot; ]
+	uppercase =&gt; [ &quot;name&quot; ]
+}
+</code></pre>
+<h3 id="字段重命名-rename">字段重命名 rename</h3>
+<pre><code>mutate {
+	 rename =&gt; {&quot;name&quot; =&gt; &quot;name3&quot;}
+}
+</code></pre>
+<h3 id="除去字段值前后空格-strip">除去字段值前后空格 strip</h3>
+<pre><code>mutate {
+	strip =&gt; [&quot;name&quot;]
+}
+</code></pre>
+<h3 id="更新字段值-updatereplace">更新字段值 update/replace</h3>
+<blockquote>
+<p>replace 作用和 update 类似，但是当字段不存在的时候，它会起到 add_field 参数一样的效果，自动添加新的字段。</p>
+</blockquote>
+<pre><code>mutate {
+	update =&gt; {&quot;name&quot; =&gt; &quot;li&quot;}
+}
+</code></pre>
+<h3 id="移除字段-remove_field">移除字段 remove_field</h3>
+<pre><code>mutate {
+	remove_field =&gt; [&quot;name&quot;]
+}
+</code></pre>
+<h3 id="增加字段-add_field">增加字段 add_field</h3>
+<pre><code>mutate {
+	add_field =&gt; {&quot;testField1&quot; =&gt; &quot;0&quot;}
+	add_field =&gt; {&quot;testField2&quot; =&gt; &quot;%{Field}&quot;} #引用 Field 中的值
+}
+</code></pre>
+<h3 id="执行次序">执行次序</h3>
+<pre><code>    rename(event) if @rename
+    update(event) if @update
+    replace(event) if @replace
+    convert(event) if @convert
+    gsub(event) if @gsub
+    uppercase(event) if @uppercase
+    lowercase(event) if @lowercase
+    strip(event) if @strip
+    remove(event) if @remove
+    split(event) if @split
+    join(event) if @join
+    merge(event) if @merge
+
+    filter_matched(event)
+
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1616739950215654/" class="post-title gt-a-link">
+                    Hadoop 3.x web 界面 upload 文件 Couldn&#39;t upload the file
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

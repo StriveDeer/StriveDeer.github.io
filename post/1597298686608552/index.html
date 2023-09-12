@@ -1,0 +1,549 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>cesium(笔记-2) | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1694489113997">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1694489113997"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    cesium(笔记-2)
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-08-18 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/pndVDXOa4/" class="post-tags">
+                            # cesium
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>Cesium应用程序另一个关键元素是Imagery(图层)。瓦片图集合根据不同的投影方式映射到虚拟的三维数字地球表面。依赖于相机指向地表的方向和距离，Cesium会去请求和渲染不同层级的图层详细信息。<br>
+多种图层能够被添加、移除、排序和适应到Cesium中。<br>
+Cesium提供了一系列方法用于处理图层，比如颜色自适应，图层叠加融合</p>
+<!-- more -->
+<h2 id="支持的图层格式">支持的图层格式：</h2>
+<p>1.wms<br>
+2.TMS<br>
+3.WMTS (with time dynamic imagery)<br>
+4.ArcGIS<br>
+5.Bing Maps<br>
+6.Google Earth<br>
+7.Mapbox<br>
+8.OpenStreetMap</p>
+<h2 id="基本图层">基本图层</h2>
+<pre><code class="language-js">var viewer = new Cesium.Viewer('cesiumContainer', {
+    imageryProvider : Cesium.createWorldImagery({
+        style : Cesium.IonWorldImageryStyle.AERIAL_WITH_LABELS
+    }),
+    baseLayerPicker : false
+});
+
+var layers = viewer.scene.imageryLayers;
+var blackMarble = layers.addImageryProvider(new Cesium.IonImageryProvider({ assetId: 3812 }));
+
+blackMarble.alpha = 0.5;
+
+blackMarble.brightness = 2.0;
+
+layers.addImageryProvider(new Cesium.SingleTileImageryProvider({
+    url : '../images/Cesium_Logo_overlay.png',
+    rectangle : Cesium.Rectangle.fromDegrees(-75.0, 28.0, -67.0, 29.75)
+}));
+</code></pre>
+<h2 id="自适应图层">自适应图层</h2>
+<pre><code>var viewer = new Cesium.Viewer('cesiumContainer');
+var imageryLayers = viewer.imageryLayers;
+
+// The viewModel tracks the state of our mini application.
+var viewModel = {
+    brightness: 0,
+    contrast: 0,
+    hue: 0,
+    saturation: 0,
+    gamma: 0
+};
+// Convert the viewModel members into knockout observables.
+Cesium.knockout.track(viewModel);
+
+// Bind the viewModel to the DOM elements of the UI that call for it.
+var toolbar = document.getElementById('toolbar');
+Cesium.knockout.applyBindings(viewModel, toolbar);
+
+// Make the active imagery layer a subscriber of the viewModel.
+function subscribeLayerParameter(name) {
+    Cesium.knockout.getObservable(viewModel, name).subscribe(
+        function(newValue) {
+            if (imageryLayers.length &gt; 0) {
+                var layer = imageryLayers.get(0);
+                layer[name] = newValue;
+            }
+        }
+    );
+}
+subscribeLayerParameter('brightness');
+subscribeLayerParameter('contrast');
+subscribeLayerParameter('hue');
+subscribeLayerParameter('saturation');
+subscribeLayerParameter('gamma');
+
+// Make the viewModel react to base layer changes.
+function updateViewModel() {
+    if (imageryLayers.length &gt; 0) {
+        var layer = imageryLayers.get(0);
+        viewModel.brightness = layer.brightness;
+        viewModel.contrast = layer.contrast;
+        viewModel.hue = layer.hue;
+        viewModel.saturation = layer.saturation;
+        viewModel.gamma = layer.gamma;
+    }
+}
+imageryLayers.layerAdded.addEventListener(updateViewModel);
+imageryLayers.layerRemoved.addEventListener(updateViewModel);
+imageryLayers.layerMoved.addEventListener(updateViewModel);
+updateViewModel();
+</code></pre>
+<h2 id="控制调整图层顺序">控制调整图层顺序</h2>
+<pre><code class="language-js">var viewer = new Cesium.Viewer('cesiumContainer', {
+    baseLayerPicker : false
+});
+var imageryLayers = viewer.imageryLayers;
+
+var viewModel = {
+    layers : [],
+    baseLayers : [],
+    upLayer : null,
+    downLayer : null,
+    selectedLayer : null,
+    isSelectableLayer : function(layer) {
+        return this.baseLayers.indexOf(layer) &gt;= 0;
+    },
+    raise : function(layer, index) {
+        imageryLayers.raise(layer);
+        viewModel.upLayer = layer;
+        viewModel.downLayer = viewModel.layers[Math.max(0, index - 1)];
+        updateLayerList();
+        window.setTimeout(function() {
+            viewModel.upLayer = viewModel.downLayer = null;
+        }, 10);
+    },
+    lower : function(layer, index) {
+        imageryLayers.lower(layer);
+        viewModel.upLayer = viewModel.layers[Math.min(viewModel.layers.length - 1, index + 1)];
+        viewModel.downLayer = layer;
+        updateLayerList();
+        window.setTimeout(function() {
+            viewModel.upLayer = viewModel.downLayer = null;
+        }, 10);
+    },
+    canRaise : function(layerIndex) {
+        return layerIndex &gt; 0;
+    },
+    canLower : function(layerIndex) {
+        return layerIndex &gt;= 0 &amp;&amp; layerIndex &lt; imageryLayers.length - 1;
+    }
+};
+var baseLayers = viewModel.baseLayers;
+
+Cesium.knockout.track(viewModel);
+
+function setupLayers() {
+    // Create all the base layers that this example will support.
+    // These base layers aren't really special.  It's possible to have multiple of them
+    // enabled at once, just like the other layers, but it doesn't make much sense because
+    // all of these layers cover the entire globe and are opaque.
+    addBaseLayerOption(
+        'Bing Maps Aerial',
+        undefined); // the current base layer
+    addBaseLayerOption(
+        'Bing Maps Road',
+        new Cesium.BingMapsImageryProvider({
+            url : 'https://dev.virtualearth.net',
+            mapStyle : Cesium.BingMapsStyle.ROAD
+        }));
+    addBaseLayerOption(
+        'ArcGIS World Street Maps',
+        new Cesium.ArcGisMapServerImageryProvider({
+            url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
+        }));
+    addBaseLayerOption(
+        'OpenStreetMaps',
+        new Cesium.OpenStreetMapImageryProvider());
+    addBaseLayerOption(
+        'Stamen Maps',
+        new Cesium.OpenStreetMapImageryProvider({
+            url : 'https://stamen-tiles.a.ssl.fastly.net/watercolor/',
+            fileExtension : 'jpg',
+            credit : 'Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.'
+        }));
+    addBaseLayerOption(
+        'Natural Earth II (local)',
+        new Cesium.TileMapServiceImageryProvider({
+            url : Cesium.buildModuleUrl('Assets/Textures/NaturalEarthII')
+        }));
+    addBaseLayerOption(
+        'USGS Shaded Relief (via WMTS)',
+        new Cesium.WebMapTileServiceImageryProvider({
+            url : 'http://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS',
+            layer : 'USGSShadedReliefOnly',
+            style : 'default',
+            format : 'image/jpeg',
+            tileMatrixSetID : 'default028mm',
+            maximumLevel : 19,
+            credit : 'U. S. Geological Survey'
+        }));
+
+    // Create the additional layers
+    addAdditionalLayerOption(
+        'United States GOES Infrared',
+        new Cesium.WebMapServiceImageryProvider({
+            url : 'https://mesonet.agron.iastate.edu/cgi-bin/wms/goes/conus_ir.cgi?',
+            layers : 'goes_conus_ir',
+            credit : 'Infrared data courtesy Iowa Environmental Mesonet',
+            parameters : {
+                transparent : 'true',
+                format : 'image/png'
+            }
+        }));
+    addAdditionalLayerOption(
+        'United States Weather Radar',
+        new Cesium.WebMapServiceImageryProvider({
+            url : 'https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi?',
+            layers : 'nexrad-n0r',
+            credit : 'Radar data courtesy Iowa Environmental Mesonet',
+            parameters : {
+                transparent : 'true',
+                format : 'image/png'
+            }
+        }));
+    addAdditionalLayerOption(
+        'TileMapService Image',
+        new Cesium.TileMapServiceImageryProvider({
+            url : '../images/cesium_maptiler/Cesium_Logo_Color'
+        }),
+        0.2);
+    addAdditionalLayerOption(
+        'Single Image',
+        new Cesium.SingleTileImageryProvider({
+            url : '../images/Cesium_Logo_overlay.png',
+            rectangle : Cesium.Rectangle.fromDegrees(-115.0, 38.0, -107, 39.75)
+        }),
+        1.0);
+    addAdditionalLayerOption(
+        'Grid',
+        new Cesium.GridImageryProvider(), 1.0, false);
+    addAdditionalLayerOption(
+        'Tile Coordinates',
+        new Cesium.TileCoordinatesImageryProvider(), 1.0, false);
+}
+
+function addBaseLayerOption(name, imageryProvider) {
+    var layer;
+    if (typeof imageryProvider === 'undefined') {
+        layer = imageryLayers.get(0);
+        viewModel.selectedLayer = layer;
+    } else {
+        layer = new Cesium.ImageryLayer(imageryProvider);
+    }
+
+    layer.name = name;
+    baseLayers.push(layer);
+}
+
+function addAdditionalLayerOption(name, imageryProvider, alpha, show) {
+    var layer = imageryLayers.addImageryProvider(imageryProvider);
+    layer.alpha = Cesium.defaultValue(alpha, 0.5);
+    layer.show = Cesium.defaultValue(show, true);
+    layer.name = name;
+    Cesium.knockout.track(layer, ['alpha', 'show', 'name']);
+}
+
+function updateLayerList() {
+    var numLayers = imageryLayers.length;
+    viewModel.layers.splice(0, viewModel.layers.length);
+    for (var i = numLayers - 1; i &gt;= 0; --i) {
+        viewModel.layers.push(imageryLayers.get(i));
+    }
+}
+
+setupLayers();
+updateLayerList();
+
+//Bind the viewModel to the DOM elements of the UI that call for it.
+var toolbar = document.getElementById('toolbar');
+Cesium.knockout.applyBindings(viewModel, toolbar);
+
+Cesium.knockout.getObservable(viewModel, 'selectedLayer').subscribe(function(baseLayer) {
+    // Handle changes to the drop-down base layer selector.
+    var activeLayerIndex = 0;
+    var numLayers = viewModel.layers.length;
+    for (var i = 0; i &lt; numLayers; ++i) {
+        if (viewModel.isSelectableLayer(viewModel.layers[i])) {
+            activeLayerIndex = i;
+            break;
+        }
+    }
+    var activeLayer = viewModel.layers[activeLayerIndex];
+    var show = activeLayer.show;
+    var alpha = activeLayer.alpha;
+    imageryLayers.remove(activeLayer, false);
+    imageryLayers.add(baseLayer, numLayers - activeLayerIndex - 1);
+    baseLayer.show = show;
+    baseLayer.alpha = alpha;
+    updateLayerList();
+});
+</code></pre>
+<pre><code class="language-html">&lt;style&gt;
+    @import url(../templates/bucket.css);
+
+    #toolbar {
+        background: rgba(42, 42, 42, 0.8);
+        padding: 4px;
+        border-radius: 4px;
+    }
+
+    #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    #toolbar table tr {
+        transform: translateY(0);
+        transition: transform 0.4s ease-out;
+    }
+
+    #toolbar table tr.up {
+        transform: translateY(33px);
+        transition: none;
+    }
+
+    #toolbar table tr.down {
+        transform: translateY(-33px);
+        transition: none;
+    }
+&lt;/style&gt;
+&lt;div id=&quot;cesiumContainer&quot; class=&quot;fullSize&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;loadingOverlay&quot;&gt;&lt;h1&gt;Loading...&lt;/h1&gt;&lt;/div&gt;
+&lt;div id=&quot;toolbar&quot;&gt;
+    &lt;table&gt;
+        &lt;tbody data-bind=&quot;foreach: layers&quot;&gt;
+        &lt;tr data-bind=&quot;css: { up: $parent.upLayer === $data, down: $parent.downLayer === $data }&quot;&gt;
+            &lt;td&gt;&lt;input type=&quot;checkbox&quot; data-bind=&quot;checked: show&quot;&gt;&lt;/td&gt;
+            &lt;td&gt;
+                &lt;span data-bind=&quot;text: name, visible: !$parent.isSelectableLayer($data)&quot;&gt;&lt;/span&gt;
+                &lt;select data-bind=&quot;visible: $parent.isSelectableLayer($data), options: $parent.baseLayers, optionsText: 'name', value: $parent.selectedLayer&quot;&gt;&lt;/select&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot; data-bind=&quot;value: alpha, valueUpdate: 'input'&quot;&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;button type=&quot;button&quot; class=&quot;cesium-button&quot; data-bind=&quot;click: function() { $parent.raise($data, $index()); }, visible: $parent.canRaise($index())&quot;&gt;
+                    ▲
+                &lt;/button&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;button type=&quot;button&quot; class=&quot;cesium-button&quot; data-bind=&quot;click: function() { $parent.lower($data, $index()); }, visible: $parent.canLower($index())&quot;&gt;
+                    ▼
+                &lt;/button&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="切割图层卷帘">切割图层(卷帘)</h2>
+<pre><code>var viewer = new Cesium.Viewer('cesiumContainer', {
+    imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
+        url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
+    }),
+    baseLayerPicker : false,
+    infoBox : false
+});
+
+var layers = viewer.imageryLayers;
+var earthAtNight = layers.addImageryProvider(new Cesium.IonImageryProvider({ assetId: 3812 }));
+earthAtNight.splitDirection = Cesium.ImagerySplitDirection.LEFT; // Only show to the left of the slider.
+
+// Sync the position of the slider with the split position
+var slider = document.getElementById('slider');
+viewer.scene.imagerySplitPosition = (slider.offsetLeft) / slider.parentElement.offsetWidth;
+
+var handler = new Cesium.ScreenSpaceEventHandler(slider);
+
+var moveActive = false;
+
+function move(movement) {
+    if(!moveActive) {
+        return;
+    }
+
+    var relativeOffset = movement.endPosition.x ;
+    var splitPosition = (slider.offsetLeft + relativeOffset) / slider.parentElement.offsetWidth;
+    slider.style.left = 100.0 * splitPosition + '%';
+    viewer.scene.imagerySplitPosition = splitPosition;
+}
+
+handler.setInputAction(function() {
+    moveActive = true;
+}, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+handler.setInputAction(function() {
+    moveActive = true;
+}, Cesium.ScreenSpaceEventType.PINCH_START);
+
+handler.setInputAction(move, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+handler.setInputAction(move, Cesium.ScreenSpaceEventType.PINCH_MOVE);
+
+handler.setInputAction(function() {
+    moveActive = false;
+}, Cesium.ScreenSpaceEventType.LEFT_UP);
+handler.setInputAction(function() {
+    moveActive = false;
+}, Cesium.ScreenSpaceEventType.PINCH_END);
+
+
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597298622682345/" class="post-title gt-a-link">
+                    cesium(笔记-1)
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

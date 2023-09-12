@@ -1,0 +1,426 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>kylin部署 | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1694489113997">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1694489113997"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    kylin部署
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-05-25 ·
+                    </time>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | centos 7.0 |kylin-2.6.2-hbase1x</strong></p>
+<blockquote>
+<p>Apache Kylin™是一个开源的分布式分析引擎，提供Hadoop/Spark之上的SQL查询接口及多维分析（OLAP）能力以支持超大规模数据，最初由eBay Inc. 开发并贡献至开源社区。它能在亚秒内查询巨大的Hive表。</p>
+</blockquote>
+<!--more-->
+<h1 id="kylin-部署">kylin 部署</h1>
+<ul>
+<li>下载 apache-kylin-2.6.2-bin-hbase1x.tar.gz</li>
+</ul>
+<h1 id="解压">解压</h1>
+<pre><code class="language-shell">tar -zxvf apache-kylin-2.6.2-bin-hbase1x.tar.gz -C /opt
+</code></pre>
+<h1 id="添加环境变量">添加环境变量</h1>
+<pre><code class="language-shell">vi /etc/profile
+
+export hive_dependency=/opt/hive-1.2.2/conf:/opt/hive-1.2.2/lib*:/opt/hive-1.2.2/hcatalog/share/hcatalog/hive-hcatalog-core-2.0.0.jar
+</code></pre>
+<h1 id="启动报错一">启动报错一</h1>
+<pre><code class="language-shell">Something wrong with Hive CLI or Beeline, please execute Hive CLI or Beeline CLI in terminal to find the root cause.
+</code></pre>
+<ul>
+<li>修改 <code>kylin/bin/find-hive-dependency.sh</code> 部分代码</li>
+</ul>
+<pre><code class="language-shell">if [ &quot;${client_mode}&quot; == &quot;beeline&quot; ]
+then
+    #beeline_shell=`$KYLIN_HOME/bin/get-properties.sh kylin.source.hive.beeline-shell`
+    #beeline_params=`bash ${KYLIN_HOME}/bin/get-properties.sh kylin.source.hive.beeline-params`
+    #hive_env=`${beeline_shell} ${hive_conf_properties} ${beeline_params} --outputformat=dsv -e &quot;set;&quot; 2&gt;&amp;1 | grep --text 'env:CLASSPATH' `
+    beeline_params=`sh ${KYLIN_HOME}/bin/get-properties.sh kylin.hive.beeline.params`
+    hive_env=`beeline ${beeline_params} --outputformat=dsv -e set | grep 'env:CLASSPATH'`
+
+else
+    source ${dir}/check-hive-usability.sh
+    hive_env=`hive -e set | grep 'env:CLASSPATH'`
+    #hive_env=`hive ${hive_conf_properties} -e set 2&gt;&amp;1 | grep 'env:CLASSPATH'`
+    
+    #hive -e set &gt;/tmp/hive_env.txt 2&gt;&amp;1
+    #hive_env=`grep 'env:CLASSPATH' /tmp/hive_env.txt`
+    #hive_env=`echo ${hive_env#*env:CLASSPATH}`
+    #hive_env=&quot;env:CLASSPATH&quot;${hive_env}
+fi
+</code></pre>
+<ul>
+<li>修改  <code>kylin/conf/kylin.properties</code></li>
+</ul>
+<pre><code class="language-shell">kylin.rest.servers=192.168.83.128:7070,192.168.83.129:7070,192.168.83.130:7070
+kylin.rest.timezone=GMT+8
+kylin.hive.client=beeline
+kylin.hive.beeline.params=-n root --hiveconf hive.security.authorization.sqlstd.confwhitelist.append='mapreduce.job.*|dfs.*' -u 'jdbc:hive2://192.168.83.128:10000'
+</code></pre>
+<ul>
+<li>分别验证 <code>bin/find-hive-dependency.sh</code></li>
+</ul>
+<blockquote>
+<p>Retrieving hive dependency...<br>
+Connecting to jdbc:hive2://192.168.83.128:10000<br>
+Connected to: Apache Hive (version 1.2.2)<br>
+Driver: Hive JDBC (version 1.2.2)<br>
+Transaction isolation: TRANSACTION_REPEATABLE_READ<br>
+1,484 rows selected (0.89 seconds)<br>
+Beeline version 1.2.2 by Apache Hive<br>
+Closing: 0: jdbc:hive2://192.168.83.128:10000</p>
+</blockquote>
+<pre><code class="language-sehll">bin/find-hbase-dependency.sh 
+</code></pre>
+<blockquote>
+<p>Retrieving hbase dependency...</p>
+</blockquote>
+<h1 id="启动报错二">启动报错二</h1>
+<pre><code class="language-shell">java.net.UnknownHostException: master:2181: 未知的名称或服务
+        at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+        at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:928)
+        at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1323)
+        at java.net.InetAddress.getAllByName0(InetAddress.java:1276)
+        at java.net.InetAddress.getAllByName(InetAddress.java:1192)
+        at java.net.InetAddress.getAllByName(InetAddress.java:1126)
+        at org.apache.zookeeper.client.StaticHostProvider.&lt;init&gt;(StaticHostProvider.java:61)
+        at org.apache.zookeeper.ZooKeeper.&lt;init&gt;(ZooKeeper.java:445)
+        at org.apache.curator.utils.DefaultZookeeperFactory.newZooKeeper(DefaultZookeeperFactory.java:29)
+        at org.apache.curator.framework.imps.CuratorFrameworkImpl$2.newZooKeeper(CuratorFrameworkImpl.java:154)
+        at org.apache.curator.HandleHolder$1.getZooKeeper(HandleHolder.java:94)
+        at org.apache.curator.HandleHolder.getZooKeeper(HandleHolder.java:55)
+        at org.apache.curator.ConnectionState.reset(ConnectionState.java:219)
+        at org.apache.curator.ConnectionState.start(ConnectionState.java:103)
+        at org.apache.curator.CuratorZookeeperClient.start(CuratorZookeeperClient.java:190)
+        at org.apache.curator.framework.imps.CuratorFrameworkImpl.start(CuratorFrameworkImpl.java:256)
+        at org.apache.kylin.storage.hbase.util.ZookeeperDistributedLock$Factory.getZKClient(ZookeeperDistributedLock.java:85)
+        at org.apache.kylin.storage.hbase.util.ZookeeperDistributedLock$Factory.&lt;init&gt;(ZookeeperDistributedLock.java:109)
+        at org.apache.kylin.storage.hbase.util.ZookeeperDistributedLock$Factory.&lt;init&gt;(ZookeeperDistributedLock.java:105)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+        at org.apache.kylin.common.util.ClassUtil.newInstance(ClassUtil.java:88)
+        at org.apache.kylin.common.KylinConfigBase.getDistributedLockFactory(KylinConfigBase.java:458)
+        at org.apache.kylin.storage.hbase.HBaseConnection.createHTableIfNeeded(HBaseConnection.java:327)
+        at org.apache.kylin.storage.hbase.HBaseResourceStore.createHTableIfNeeded(HBaseResourceStore.java:114)
+        at org.apache.kylin.storage.hbase.HBaseResourceStore.&lt;init&gt;(HBaseResourceStore.java:88)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+        at org.apache.kylin.common.persistence.ResourceStore.createResourceStore(ResourceStore.java:92)
+        at org.apache.kylin.common.persistence.ResourceStore.getStore(ResourceStore.java:111)
+        at org.apache.kylin.rest.service.AclTableMigrationTool.checkIfNeedMigrate(AclTableMigrationTool.java:99)
+        at org.apache.kylin.tool.AclTableMigrationCLI.main(AclTableMigrationCLI.java:43)
+2019-05-20 20:11:14,464 DEBUG [main] util.ZookeeperDistributedLock:147 : 27720@master trying to lock /kylin/kylin_metadata/create_htable/kylin_metadata/lock
+2019-05-20 20:11:29,653 ERROR [main] curator.ConnectionState:201 : Connection timed out for connection string (master:2181:2181,slave0:2181:2181,slave1:2181:2181) and timeout (15000) / elapsed (21695)
+org.apache.curator.CuratorConnectionLossException: KeeperErrorCode = ConnectionLoss
+        at org.apache.curator.ConnectionState.checkTimeouts(ConnectionState.java:198)
+        at org.apache.curator.ConnectionState.getZooKeeper(ConnectionState.java:88)
+        at org.apache.curator.CuratorZookeeperClient.getZooKeeper(CuratorZookeeperClient.java:115)
+        at org.apache.curator.framework.imps.CuratorFrameworkImpl.getZooKeeper(CuratorFrameworkImpl.java:474)
+        at org.apache.curator.framework.imps.CreateBuilderImpl$11.call(CreateBuilderImpl.java:688)
+        at org.apache.curator.framework.imps.CreateBuilderImpl$11.call(CreateBuilderImpl.java:672)
+        at org.apache.curator.RetryLoop.callWithRetry(RetryLoop.java:107)
+        at org.apache.curator.framework.imps.CreateBuilderImpl.pathInForeground(CreateBuilderImpl.java:668)
+        at org.apache.curator.framework.imps.CreateBuilderImpl.protectedPathInForeground(CreateBuilderImpl.java:453)
+        at org.apache.curator.framework.imps.CreateBuilderImpl.forPath(CreateBuilderImpl.java:443)
+        at org.apache.curator.framework.imps.CreateBuilderImpl.forPath(CreateBuilderImpl.java:44)
+        at org.apache.kylin.storage.hbase.util.ZookeeperDistributedLock.lock(ZookeeperDistributedLock.java:150)
+        at org.apache.kylin.storage.hbase.util.ZookeeperDistributedLock.lock(ZookeeperDistributedLock.java:171)
+        at org.apache.kylin.storage.hbase.HBaseConnection.createHTableIfNeeded(HBaseConnection.java:328)
+        at org.apache.kylin.storage.hbase.HBaseResourceStore.createHTableIfNeeded(HBaseResourceStore.java:114)
+        at org.apache.kylin.storage.hbase.HBaseResourceStore.&lt;init&gt;(HBaseResourceStore.java:88)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+        at org.apache.kylin.common.persistence.ResourceStore.createResourceStore(ResourceStore.java:92)
+        at org.apache.kylin.common.persistence.ResourceStore.getStore(ResourceStore.java:111)
+        at org.apache.kylin.rest.service.AclTableMigrationTool.checkIfNeedMigrate(AclTableMigrationTool.java:99)
+        at org.apache.kylin.tool.AclTableMigrationCLI.main(AclTableMigrationCLI.java:43)
+</code></pre>
+<ul>
+<li><code>修改 hbase-site.xml文件</code></li>
+</ul>
+<pre><code class="language-xml">&lt;configuration&gt;
+    &lt;!-- 指定hbase在HDFS上存储的路径 --&gt;
+	&lt;property&gt;
+	&lt;name&gt;hbase.rootdir&lt;/name&gt;
+	&lt;value&gt;hdfs://master:9000/hbase&lt;/value&gt;
+	&lt;/property&gt;
+
+	&lt;!-- 指定hbase是分布式的 --&gt;
+	&lt;property&gt;
+	&lt;name&gt;hbase.cluster.distributed&lt;/name&gt;
+	&lt;value&gt;true&lt;/value&gt;
+	&lt;/property&gt;
+
+	&lt;!-- 指定zk的地址，多个用“,”分割 --&gt;
+	&lt;property&gt;
+	&lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;
+	&lt;value&gt;master,slave0,slave1&lt;/value&gt;
+	&lt;/property&gt;
+
+	&lt;property&gt;
+	&lt;name&gt;dfs.support.append&lt;/name&gt;
+	&lt;value&gt;true&lt;/value&gt;
+	&lt;/property&gt; 
+
+	&lt;property&gt;
+	&lt;name&gt;hbase.zookeeper.property.clientPort&lt;/name&gt;
+	&lt;value&gt;2181&lt;/value&gt;
+	&lt;source&gt;2181默认值，来源hbase-default.xml&lt;/source&gt; 
+	&lt;/property&gt; 
+
+	&lt;property&gt;
+	&lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;
+	&lt;value&gt;/root/tmp/hbase/zookeeper&lt;/value&gt;
+	&lt;/property&gt;
+&lt;/configuration&gt;
+</code></pre>
+<ul>
+<li><code>http://192.168.83.128:7070/kylin</code></li>
+</ul>
+<pre><code class="language-shell">2019-05-20 22:39:35,530 INFO  [main] util.ZookeeperDistributedLock:238 : 70746@master released lock at /kylin/kylin_metadata/create_htable/kylin_metadata/lock
+Exception in thread &quot;main&quot; java.lang.IllegalArgumentException: Failed to find metadata store by url: kylin_metadata@hbase
+        at org.apache.kylin.common.persistence.ResourceStore.createResourceStore(ResourceStore.java:99)
+        at org.apache.kylin.common.persistence.ResourceStore.getStore(ResourceStore.java:111)
+        at org.apache.kylin.rest.service.AclTableMigrationTool.checkIfNeedMigrate(AclTableMigrationTool.java:99)
+        at org.apache.kylin.tool.AclTableMigrationCLI.main(AclTableMigrationCLI.java:43)
+Caused by: java.lang.reflect.InvocationTargetException
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+        at org.apache.kylin.common.persistence.ResourceStore.createResourceStore(ResourceStore.java:92)
+        ... 3 more
+Caused by: org.apache.hadoop.hbase.client.RetriesExhaustedException: Failed after attempts=1, exceptions:
+Mon May 20 22:39:35 CST 2019, RpcRetryingCaller{globalStartTime=1558363169520, pause=100, retries=1}, java.io.IOException: Call to master/192.168.83.128:16000 failed on local exception: org.apache.hadoop.hbase.ipc.CallTimeoutException: Call id=7, waitTime=5001, operationTimeout=5000 expired.
+
+        at org.apache.hadoop.hbase.client.RpcRetryingCaller.callWithRetries(RpcRetryingCaller.java:157)
+        at org.apache.hadoop.hbase.client.HBaseAdmin.executeCallable(HBaseAdmin.java:4297)
+        at org.apache.hadoop.hbase.client.HBaseAdmin.executeCallable(HBaseAdmin.java:4289)
+        at org.apache.hadoop.hbase.client.HBaseAdmin.createTableAsyncV2(HBaseAdmin.java:753)
+        at org.apache.hadoop.hbase.client.HBaseAdmin.createTable(HBaseAdmin.java:674)
+        at org.apache.hadoop.hbase.client.HBaseAdmin.createTable(HBaseAdmin.java:607)
+        at org.apache.kylin.storage.hbase.HBaseConnection.createHTableIfNeeded(HBaseConnection.java:347)
+        at org.apache.kylin.storage.hbase.HBaseResourceStore.createHTableIfNeeded(HBaseResourceStore.java:114)
+        at org.apache.kylin.storage.hbase.HBaseResourceStore.&lt;init&gt;(HBaseResourceStore.java:88)
+        ... 8 more
+Caused by: java.io.IOException: Call to master/192.168.83.128:16000 failed on local exception: org.apache.hadoop.hbase.ipc.CallTimeoutException: Call id=7, waitTime=5001, operationTimeout=5000 expired.
+        at org.apache.hadoop.hbase.ipc.AbstractRpcClient.wrapException(AbstractRpcClient.java:292)
+        at org.apache.hadoop.hbase.ipc.RpcClientImpl.call(RpcClientImpl.java:1276)
+        at org.apache.hadoop.hbase.ipc.AbstractRpcClient.callBlockingMethod(AbstractRpcClient.java:227)
+        at org.apache.hadoop.hbase.ipc.AbstractRpcClient$BlockingRpcChannelImplementation.callBlockingMethod(AbstractRpcClient.java:336)
+        at org.apache.hadoop.hbase.protobuf.generated.MasterProtos$MasterService$BlockingStub.createTable(MasterProtos.java:58551)
+        at org.apache.hadoop.hbase.client.ConnectionManager$HConnectionImplementation$4.createTable(ConnectionManager.java:1864)
+        at org.apache.hadoop.hbase.client.HBaseAdmin$5.call(HBaseAdmin.java:762)
+        at org.apache.hadoop.hbase.client.HBaseAdmin$5.call(HBaseAdmin.java:754)
+        at org.apache.hadoop.hbase.client.RpcRetryingCaller.callWithRetries(RpcRetryingCaller.java:136)
+        ... 16 more
+Caused by: org.apache.hadoop.hbase.ipc.CallTimeoutException: Call id=7, waitTime=5001, operationTimeout=5000 expired.
+        at org.apache.hadoop.hbase.ipc.Call.checkAndSetTimeout(Call.java:73)
+        at org.apache.hadoop.hbase.ipc.RpcClientImpl.call(RpcClientImpl.java:1250)
+        ... 23 more
+2019-05-20 22:39:35,682 INFO  [close-hbase-conn] hbase.HBaseConnection:136 : Closing HBase connections...
+2019-05-20 22:39:35,683 INFO  [close-hbase-conn] client.ConnectionManager$HConnectionImplementation:2155 : Closing master protocol: MasterService
+2019-05-20 22:39:35,684 INFO  [close-hbase-conn] client.ConnectionManager$HConnectionImplementation:1726 : Closing zookeeper sessionid=0x36ad53f63430007
+2019-05-20 22:39:35,749 INFO  [main-EventThread] zookeeper.ClientCnxn:512 : EventThread shut down
+2019-05-20 22:39:35,749 INFO  [close-hbase-conn] zookeeper.ZooKeeper:684 : Session: 0x36ad53f63430007 closed
+2019-05-20 22:39:36,113 INFO  [Thread-6] zookeeper.ZooKeeper:684 : Session: 0x36ad53f63430008 closed
+2019-05-20 22:39:36,114 INFO  [main-EventThread] zookeeper.ClientCnxn:512 : EventThread shut down
+ERROR: Unknown error. Please check full log.
+</code></pre>
+<ul>
+<li>提取出重要的内容</li>
+</ul>
+<pre><code class="language-shell">Caused by: org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.hbase.TableExistsException): kylin_metadata 
+
+Caused by: org.apache.hadoop.hbase.TableExistsException: kylin_metadata
+</code></pre>
+<ul>
+<li>进入 zookeeper zkCli.sh</li>
+</ul>
+<pre><code>/opt/zookeeper-3.4.6/bin/zkCli.sh 
+ls /hbase/table
+rmr /hbase/table/kylin_metadata
+
+重启hbase
+</code></pre>
+<ul>
+<li>登陆 <code>http://host:7070/kylin</code></li>
+</ul>
+<p>没有反应<br>
+注释 <code> kylin/tomcat/conf/server.xml</code></p>
+<pre><code class="language-xml">        &lt;Connector port=&quot;7443&quot; protocol=&quot;org.apache.coyote.http11.Http11Protocol&quot;
+                   maxThreads=&quot;150&quot; SSLEnabled=&quot;true&quot; scheme=&quot;https&quot; secure=&quot;true&quot;
+                   keystoreFile=&quot;conf/.keystore&quot; keystorePass=&quot;changeit&quot;
+                   clientAuth=&quot;false&quot; sslProtocol=&quot;TLS&quot; /&gt;
+</code></pre>
+<ul>
+<li>补充：</li>
+</ul>
+<pre><code>hive 启动时无法访问spark-assembly-*.jar的解决办法
+将加载原来的lib/spark-assembly-*.jar`替换成jars/*.jar
+</code></pre>
+<p>部分代码如下</p>
+<pre><code># add Spark assembly jar to the classpath
+if [[ -n &quot;$SPARK_HOME&quot; ]]
+then
+  #sparkAssemblyPath=`ls ${SPARK_HOME}/lib/spark-assembly-*.jar`
+  sparkAssemblyPath=`ls ${SPARK_HOME}/jars/*.jar`
+  CLASSPATH=&quot;${CLASSPATH}:${sparkAssemblyPath}&quot;
+fi
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597299561133532/" class="post-title gt-a-link">
+                    kafka生产者启动报错及kafka常用命令
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

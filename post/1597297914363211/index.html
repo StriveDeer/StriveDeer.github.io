@@ -1,0 +1,211 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>启动 jenkins Job for jenkins service failed.... | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1694489113997">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1694489113997"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    启动 jenkins Job for jenkins service failed....
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2018-09-12 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/ShJB_F921/" class="post-tags">
+                            # centos
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>搭建环境 | 系统：centos 7 | Java 1.8 | jenkins 2.121.3-1.1 2.1</strong></p>
+<pre><code>[root@master ~]# /etc/init.d/jenkins start 
+
+Starting jenkins (via systemctl):  Job for jenkins.service failed
+because the control process exited with error code. See &quot;systemctl
+status jenkins.service&quot; and &quot;journalctl -xe&quot; for details.
+[FAILED]
+</code></pre>
+<h3 id="查看日志">查看日志</h3>
+<pre><code>● jenkins.service - LSB: Jenkins Automation Serve  
+    Loaded: loaded (/etc/rc.d/init.d/jenkins; bad; vendor preset: disabled)  
+    Active: failed (Result: exit-code) since Tue 2018-09-11 20:39:41 EDT; 2min 48s ago  
+    Docs: man:systemd-sysv-generator(8)  
+Sep 11 20:39:38 master systemd[1]: Starting LSB: Jenkins Automation Server...     
+Sep 11 20:39:40 master runuser[11110]: pam\unix(runuser:session): session opened for ...=0)     
+Sep 11 20:39:41 master jenkins[11104]: Starting Jenkins bash: /usr/jdk1.8: Is a directory     
+Sep 11 20:39:41 master runuser[11110]: pam\unix(runuser:session): session closed for ...oot     
+Sep 11 20:39:41 master jenkins[11104]: [FAILED]     
+Sep 11 20:39:41 master systemd[1]: jenkins.service: control process exited, code=exit...s=1     
+Sep 11 20:39:41 master systemd[1]: Failed to start LSB: Jenkins Automation Server.     
+Sep 11 20:39:41 master systemd[1]: Unit jenkins.service entered failed state.     
+Sep 11 20:39:41 master systemd[1]: jenkins.service failed.     
+Hint: Some lines were ellipsized, use -l to show in full.
+</code></pre>
+<hr>
+<h3 id="修改配置文件">修改配置文件：</h3>
+<blockquote>
+<p>candidates=“<br>
+#/etc/alternatives/java<br>
+#/usr/lib/jvm/java-1.8.0/bin/java<br>
+#/usr/lib/jvm/jre-1.8.0/bin/java<br>
+#/usr/lib/jvm/java-1.7.0/bin/java<br>
+#/usr/lib/jvm/jre-1.7.0/bin/java<br>
+#/usr/bin/java<br>
+#/usr/jdk1.8</p>
+</blockquote>
+<pre><code>/usr/jdk1.8/bin/java  
+（注释掉原有jdk路径,添加自己的）
+在candidates里插入自己的jdk java路径，其他的全部注释掉
+#JENKINS\_USER=&quot;jenkins&quot;
+   JENKINS\_USER=&quot;root&quot;
+   JENKINS\_USER 改成root
+</code></pre>
+<h3 id="再次启动-jenkins-错误解决">再次启动 jenkins 错误解决</h3>
+<pre><code class="language-log">[root@master ~]# /etc/init.d/jenkins start
+Starting jenkins (via systemctl):  Warning: jenkins.service changed on disk. Run 'systemctl daemon-reload' to reload units.
+[  OK  ]
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597299356937235/" class="post-title gt-a-link">
+                    hive 初始化msyql报错 SQL Error code 1045
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

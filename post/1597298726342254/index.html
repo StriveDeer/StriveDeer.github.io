@@ -1,0 +1,307 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>cesium(笔记-3) | ibiji</title>
+
+<link rel="shortcut icon" href="https://ibiji.top/favicon.ico?v=1694489113997">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://ibiji.top/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            ibiji
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/archives" class="menu gt-a-link">
+                    归档
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/tags" class="menu gt-a-link">
+                    标签
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1694489113997"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    cesium(笔记-3)
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2019-08-19 ·
+                    </time>
+                    
+                        <a href="https://ibiji.top/tag/pndVDXOa4/" class="post-tags">
+                            # cesium
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p><strong>运行环境 | cesium 1.58 | webstorm 2018.2.2 | windows 10 pro</strong></p>
+<p>Cesium支持流式的、可视化的全球高程投影地形地势、水形数据，包括海洋、湖泊、河流、山峰、峡谷和其他能够被三维展示出来的且效果比二维好的地形数据。像图层数据一样，Cesium引擎会从一个服务器上请求流式地形数据，仅请求那些基于当前相机能看到的需要绘制的图层上的数据。</p>
+<pre><code class="language-js">// Load Cesium World Terrain
+viewer.terrainProvider = Cesium.createWorldTerrain({
+    requestWaterMask : true, // required for water effects
+    requestVertexNormals : true // required for terrain lighting
+});
+
+// Enable depth testing so things behind the terrain disappear.
+viewer.scene.globe.depthTestAgainstTerrain = true;
+</code></pre>
+<!-- more -->
+<h2 id="高投影的arctic-terrain">高投影的arctic terrain</h2>
+<pre><code class="language-js">// High-resolution arctic terrain from the Arctic DEM project (Release 4), tiled and hosted by Cesium ion.
+// https://www.pgc.umn.edu/data/arcticdem/
+var viewer = new Cesium.Viewer('cesiumContainer', {
+    terrainProvider: new Cesium.CesiumTerrainProvider({
+        url: Cesium.IonResource.fromAssetId(3956)
+    })
+});
+
+// Add Alaskan locations
+Sandcastle.addDefaultToolbarMenu([{
+    text: 'Denali',
+    onselect: function() {
+        viewer.scene.camera.flyTo({
+            destination: Cesium.Cartesian3.fromRadians(-2.6399828792482234, 1.0993550795541742, 5795),
+            orientation: {
+                heading: 3.8455,
+                pitch: -0.4535,
+                roll: 0.0
+            }
+        });
+    }
+}, {
+    text: 'Anchorage Area',
+    onselect: function() {
+        viewer.scene.camera.flyTo({
+            destination: Cesium.Cartesian3.fromRadians(-2.610708034601548, 1.0671172431736584, 1900),
+            orientation: {
+                heading: 4.6,
+                pitch: -0.341,
+                roll: 0.0
+            }
+        });
+    }
+}, {
+    text: 'Peaks',
+    onselect: function() {
+        viewer.scene.camera.flyTo({
+            destination: Cesium.Cartesian3.fromRadians(-2.6928866820212813, 1.072394255273859, 3700),
+            orientation: {
+                heading: 1.6308222948889464,
+                pitch: -0.6473480165020193,
+                roll: 0.0
+            }
+        });
+    }
+}, {
+    text: 'Riverbed',
+    onselect: function() {
+        viewer.scene.camera.flyTo({
+            destination: Cesium.Cartesian3.fromRadians(-2.6395623497608596, 1.0976443174490356, 2070),
+            orientation: {
+                heading: 6.068794108659519,
+                pitch: -0.08514161789475816,
+                roll: 0.0
+            }
+        });
+    }
+}], 'toolbar');
+</code></pre>
+<h2 id="高投影的pennsylvania-terrain">高投影的Pennsylvania terrain</h2>
+<pre><code class="language-js">// High resolution terrain of Pennsylvania curated by Pennsylvania Spatial Data Access (PASDA)
+// http://www.pasda.psu.edu/
+var viewer = new Cesium.Viewer('cesiumContainer', {
+    terrainProvider: new Cesium.CesiumTerrainProvider({
+        url: Cesium.IonResource.fromAssetId(3957)
+    })
+});
+
+// Add PA locations
+Sandcastle.addDefaultToolbarMenu([{
+    text : 'Pinnacle',
+    onselect : function() {
+        viewer.scene.camera.flyTo({
+            destination : Cesium.Cartesian3.fromRadians(-1.3324415110874286, 0.6954224325279967, 236.6770689945084),
+            orientation : {
+                heading : Cesium.Math.toRadians(310),
+                pitch : Cesium.Math.toRadians(-15),
+                roll : 0.0
+            }
+        });
+    }
+}, {
+    text : 'Mount Nittany',
+    onselect : function() {
+        viewer.scene.camera.flyTo({
+            destination : Cesium.Cartesian3.fromRadians(-1.358985133937573, 0.7123252393978314, 451.05748252867375),
+            orientation : {
+                heading : Cesium.Math.toRadians(85),
+                pitch : Cesium.Math.toRadians(0),
+                roll : 0.0
+            }
+        });
+    }
+}, {
+    text : 'Horseshoe Curve',
+    onselect : function() {
+        viewer.scene.camera.flyTo({
+            destination : Cesium.Cartesian3.fromRadians(-1.3700147546199826, 0.706808606166025, 993.7916313325215),
+            orientation : {
+                heading : Cesium.Math.toRadians(90),
+                pitch : Cesium.Math.toRadians(-15),
+                roll : 0.0
+            }
+        });
+    }
+}, {
+    text : 'Jim Thorpe',
+    onselect : function() {
+        viewer.scene.camera.flyTo({
+            destination : Cesium.Cartesian3.fromRadians(-1.3218297501066052, 0.713358272291525, 240.87968743408845),
+            orientation : {
+                heading : Cesium.Math.toRadians(200),
+                pitch : Cesium.Math.toRadians(-5),
+                roll : 0.0
+            }
+        });
+    }
+}, {
+    text : 'Grand Canyon of PA',
+    onselect : function() {
+        viewer.scene.camera.flyTo({
+            destination : Cesium.Cartesian3.fromRadians(-1.349379633251472, 0.720297672225785, 656.268309953562),
+            orientation : {
+                heading : Cesium.Math.toRadians(200),
+                pitch : Cesium.Math.toRadians(-5),
+                roll : 0.0
+            }
+        });
+    }
+}], 'toolbar');
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://ibiji.top/post/1597298686608552/" class="post-title gt-a-link">
+                    cesium(笔记-2)
+                </a>
+            </div>
+        
+
+        
+
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">❤️</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        ibiji
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://ibiji.top/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
